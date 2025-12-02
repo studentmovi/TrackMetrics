@@ -21,5 +21,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return result;
     };
 
+    const register = async (email: string, username: string, password: string) => {
+        setLoading(true);
+        const result = await repo.register(email, username, password);
+        setLoading(false);
+        return result;
+    };
+
     return <AuthContext.Provider value={{ login, loading }}>{children}</AuthContext.Provider>;
 };

@@ -19,7 +19,9 @@ export const ApiRequestRepo = {
     updateProject: (id: string, updates: any) =>
         axios.put(`/api/projects/${id}`, updates, getAuthHeaders()),
     AuthUser: (username: string, password: string) =>
-        axios.post("/api/users/login", { login: username, password }),
+        axios.post("/api/auth/login", { login: username, password }),
+    RegisterUser: (email: string, username: string, password: string) =>
+        axios.post("/api/users/register", { email, username, password }),
     getGithubOrgs: (token) => {
         const config = {
             headers: { Authorization: `Bearer ${token}` },

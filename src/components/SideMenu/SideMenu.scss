@@ -1,0 +1,57 @@
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background: #0f1b2b;
+  padding: 20px;
+  box-shadow: 4px 0 12px rgba(0,0,0,0.4);
+  z-index: 15;
+
+  /* 👇 invisibilité totale */
+  transform: translateX(-100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+          transform 0.3s ease,
+          opacity 0.3s ease,
+          visibility 0.3s ease;
+
+  &.open {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 18px;
+      transition: 0.2s;
+
+      &:hover {
+        color: #4f9cff;
+      }
+    }
+  }
+
+  .close-btn {
+    margin-top: 40px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    background: #1e293b;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+}

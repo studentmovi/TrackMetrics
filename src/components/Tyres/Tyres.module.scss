@@ -1,0 +1,31 @@
+.card {
+  background: #132635;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tyre {
+  background: #0e1d29;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+
+  h3 {
+    font-size: 14px;
+  }
+
+  p {
+    margin: 3px 0;
+  }
+}
+
+.bad {
+  border: 2px solid #ff5b5b;
+}

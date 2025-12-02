@@ -1,0 +1,165 @@
+/* ───────────────────────────────────────────── */
+/*                 HEADER GLOBAL                 */
+/* ───────────────────────────────────────────── */
+.header {
+  height: 65px;
+  background: #0f1b2b;
+  border-bottom: 1px solid #1e2d3d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  position: fixed;         // 🟢 Fixé proprement en haut
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;           // Toujours au-dessus du menu
+
+  @media (max-width: 520px) {
+    padding: 0 12px;
+  }
+}
+
+/* ───────────────────────────────────────────── */
+/*                     BURGER                    */
+/* ───────────────────────────────────────────── */
+.burger {
+  width: 32px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  z-index: 1100; // 🟢 Above menu to avoid clicking issues
+
+  span {
+    width: 100%;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 4px;
+    transition: 0.3s;
+  }
+
+  &:hover span {
+    background: #53b3ff;
+  }
+}
+
+/* ───────────────────────────────────────────── */
+/*                    TITLE                      */
+/* ───────────────────────────────────────────── */
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #d6e8ff;
+  text-align: center;
+
+  @media (max-width: 480px) {
+    font-size: 17px;
+  }
+}
+
+/* ───────────────────────────────────────────── */
+/*                   USER BLOCK                  */
+/* ───────────────────────────────────────────── */
+.userBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  @media (max-width: 480px) {
+    gap: 6px;
+  }
+}
+
+.flag img {
+  border-radius: 4px;
+}
+
+.info {
+  text-align: right;
+  line-height: 1.1;
+
+  @media (max-width: 480px) {
+    display: none; // masque infos sur petit écran
+  }
+}
+
+.username {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.number {
+  color: #53b3ff;
+  font-size: 12px;
+}
+
+.avatar {
+  border-radius: 50%;
+  border: 2px solid #1e3e5c;
+  width: 42px;
+  height: 42px;
+  margin-right: 2rem;
+
+  @media (max-width: 480px) {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* ───────────────────────────────────────────── */
+/*                   SLIDE MENU                  */
+/* ───────────────────────────────────────────── */
+.menu {
+  position: fixed;
+  top: 65px;
+  left: -300px;                 // 🟢 totalement hors écran, garantie
+  width: 260px;
+  height: calc(100vh - 65px);
+  background: #0c1727;
+  padding: 25px 20px;
+  transition: left 0.3s ease;   // 🟢 plus de transform = plus de décalage
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.45);
+  z-index: 900;
+
+  @media (max-width: 480px) {
+    width: 220px;
+    left: -240px;               // 🟢 pareil mais adaptatif mobile
+  }
+}
+
+.menu.open {
+  left: 0;                      // 🟢 ouverture parfaite
+}
+/* ───────────────────────────────────────────── */
+/*                    MENU LINKS                 */
+/* ───────────────────────────────────────────── */
+.menu a {
+  color: #d8e9ff;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 12px 10px;
+  border-radius: 10px;
+  transition: 0.25s;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+
+  &:hover {
+    background: #1e3248;
+    border-color: #2e4a6b;
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
+}

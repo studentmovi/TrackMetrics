@@ -1,0 +1,15 @@
+.tm-footer {
+  width: auto;
+  padding: 15px;
+  background: #0f1b2b;
+  border-top: 1px solid #1d2a3a;
+  color: #8393a6;
+  text-align: center;
+  font-size: 14px;
+  margin-top: auto;   // 🟢 KEY : le footer va en bas naturellement
+
+  @media (max-width: 500px) {
+    font-size: 12px;
+    padding: 12px;
+  }
+}

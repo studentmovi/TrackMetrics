@@ -1,0 +1,46 @@
+.session-container {
+  margin-top: 25px;
+  color: #dce4ef;
+  padding: 10px 14px;
+  font-family: "Space Grotesk", sans-serif;
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #9db7fb;
+  }
+
+  .laps-table {
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 12px;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th {
+        text-align: left;
+        font-size: 13px;
+        color: #64748b;
+        padding-bottom: 8px;
+      }
+
+      td {
+        padding: 6px 0;
+      }
+
+      tr {
+        border-bottom: 1px solid #1e293b;
+
+        &.faster td:last-child {
+          color: #22c55e;
+        }
+
+        &.slower td:last-child {
+          color: #ef4444;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+.container {
+  width: auto;
+  min-height: 100vh;
+  background: #0a0f1a;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  /* Réserve l'espace du header & footer */
+  padding-top: 65px;       // hauteur du header
+  padding-bottom: 70px;    // hauteur du footer
+
+  @media (min-width: 768px) {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 65px;      // ❗ garder le header !!!
+    padding-bottom: 70px;   // ❗ garder le footer !!
+  }
+}
+.container {
+  overflow-x: hidden;
+}
+

@@ -1,0 +1,9 @@
+.page {
+  width: 100%;
+  height: auto;
+  overflow-x: hidden; // 🟢 le plus important
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}

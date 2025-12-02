@@ -1,6 +1,7 @@
 "use client";
-import LoginForm from "@/component/LoginForm/LoginForm";
+import LoginForm from "@/components/LoginForm/LoginForm";
 import styles from "./LoginPage.module.scss";
+import {Footer} from "@/components/Layout/Footer/Footer";
 
 
 export default function Page() {
@@ -26,6 +27,8 @@ export default function Page() {
 
                 <LoginForm />
             </div>
+            <Footer/>
         </div>
+
     );
 }
