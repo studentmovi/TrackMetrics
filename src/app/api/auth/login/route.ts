@@ -10,23 +10,34 @@ const loginSchema = z.object({
     password: z.string().min(6, "Mot de passe trop court"),
 });
 
-
 export async function POST(req: NextRequest) {
-    return withDb(async (db) => {
-        try {
-            const body = await req.json();
-            const { login, password } = loginSchema.parse(body);
+    try {
+        const body = await req.json();
 
-            const user = await UserService.validateLogin(db, login, password);
+        const result = loginSchema.safeParse(body);
+        if (!result.success) {
+            throw new ApiError(result.error.issues[0].message, 400);
+        }
+
+        const { login, password } = result.data;
+
+        return withDb(async (db) => {
+            const cleanLogin = sanitizeText(login);
+            const cleanPassword = sanitizeText(password);
+
+            const user = await UserService.validateLogin(db, cleanLogin, cleanPassword);
+
+            if (!user) {
+                throw new ApiError("Identifiants invalides", 401);
+            }
 
             return NextResponse.json({
-                id: user.id,
-                email: user.email,
-                username: sanitizeText(user.username),
+                success: true,
+                user,
             });
-        } catch (err: any) {
-            return handleApiError(err);
-        }
-    });
-}
+        });
 
+    } catch (err) {
+        return handleApiError(err, "Erreur lors de la tentative de connexion");
+    }
+}

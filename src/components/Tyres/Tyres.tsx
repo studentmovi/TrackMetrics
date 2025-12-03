@@ -1,35 +1,40 @@
 "use client";
-import styles from "./Tyres.module.scss";
 
-export default function Tyres() {
+import styles from "./Tyres.module.scss";
+import { getTyreColor } from "@/utils/tyres";
+import { getBrakeColor } from "@/utils/brakes";
+import { getCarCategory } from "@/utils/car";
+
+export default function Tyres({ tyres, brakes, carName }) {
+    const category = getCarCategory(carName);
+
     return (
         <div className={styles.card}>
-            <h2>Tyres</h2>
+            <h2>Tyres & Brakes</h2>
 
             <div className={styles.grid}>
-                <div className={styles.tyre}>
-                    <h3>Front Left</h3>
-                    <p>101°C</p>
-                    <p>20.6 psi</p>
-                </div>
+                {["FL", "FR", "RL", "RR"].map((pos) => {
+                    // @ts-ignore
+                    const t = tyres[pos];
+                    // @ts-ignore
+                    const b = brakes[pos];
 
-                <div className={styles.tyre}>
-                    <h3>Front Right</h3>
-                    <p>104°C</p>
-                    <p>20.7 psi</p>
-                </div>
+                    const tyreColor = styles[getTyreColor(t.temp, category)];
+                    const brakeColor = styles[getBrakeColor(b.temp, category)];
 
-                <div className={styles.tyre}>
-                    <h3>Rear Left</h3>
-                    <p>102°C</p>
-                    <p>20.4 psi</p>
-                </div>
+                    return (
+                        <div key={pos} className={`${styles.tyre} ${tyreColor}`}>
+                            <h3>{pos}</h3>
+                            <p>{t.temp.toFixed(0)}°C</p>
+                            <p>{t.pressure.toFixed(1)} psi</p>
+                            <p className={styles.wear}>Wear: {t.wear.toFixed(1)}%</p>
 
-                <div className={`${styles.tyre} ${styles.bad}`}>
-                    <h3>Rear Right</h3>
-                    <p>112°C</p>
-                    <p>20.3 psi</p>
-                </div>
+                            <div className={`${styles.brakeDisk} ${brakeColor}`}>
+                                <span>{b.temp.toFixed(0)}°C</span>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

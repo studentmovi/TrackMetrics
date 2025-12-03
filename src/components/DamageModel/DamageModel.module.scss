@@ -5,23 +5,15 @@
   margin-bottom: 18px;
 }
 
-.h2 {
-  margin-bottom: 10px;
+.damageList p {
+  margin: 6px 0;
+  font-size: 14px;
 }
 
-.carImg {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-.damageList {
-  p {
-    margin: 5px 0;
-    font-size: 14px;
-  }
-}
-
+.red   { color: #ff4d4d; }
+.yellow { color: #ffd048; }
 .green { color: #00da59; }
-.yellow { color: #ffce3b; }
-.red { color: #e64545; }
+
+.color {
+  color: var(--color);
+}

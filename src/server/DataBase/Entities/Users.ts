@@ -28,4 +28,7 @@ export class User {
 
     @Column("varchar", { nullable: true })
     telemetry_token!: string;
+
+    @Column("int", { nullable: true })
+    pilot_number!: number | null;
 }
