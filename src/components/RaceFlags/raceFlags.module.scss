@@ -1,0 +1,15 @@
+.flags {
+  display: flex;
+  gap: 10px;
+}
+
+.flag {
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.green { background: #00b34b; }
+.yellow { background: #c7a000; }
+.blue { background: #0068ff; }
+.red { background: #d90000; }

@@ -16,7 +16,7 @@ export default function Header({ user }) {
             </button>
 
             {/* TITLE */}
-            <h1 className={styles.title}>Live Engineer</h1>
+            <h1 className={styles.title}>TrackMetrics</h1>
 
             {/* USER */}
             <div className={styles.userBlock}>

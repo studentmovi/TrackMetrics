@@ -4,12 +4,19 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     return withDb(async (db) => {
-        const { userId } = await req.json();
+        const body = await req.json();
+        const { session_id } = body;
 
-        const token = await TelemetryTokenService.generateToken(db, userId);
+        if (!session_id) {
+            return NextResponse.json(
+                { error: "session_id manquant" },
+                { status: 400 }
+            );
+        }
 
-        return NextResponse.json({
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/telemetry/${userId}/${token}`
-        });
+        // Génération du token via un service propre
+        const token = await TelemetryTokenService.generateToken(db, session_id);
+
+        return NextResponse.json({ token });
     });
 }

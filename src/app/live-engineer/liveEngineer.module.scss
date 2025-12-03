@@ -1,0 +1,19 @@
+.container {
+  background: #0c1a24;
+  min-height: 100vh;
+  color: white;
+}
+
+.main {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 20px;
+}
+
+.block {
+  background: #0f1b2b;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}

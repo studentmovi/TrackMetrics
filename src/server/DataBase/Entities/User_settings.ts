@@ -22,4 +22,13 @@ export class UserSettings {
 
     @Column("varchar", { default: "metric" })
     units!: string;
+
+    @Column("varchar", { default: "24h" })
+    time_format!: string; // "24h" | "12h"
+
+    @Column("varchar", { default: "fr" })
+    language!: string;
+
+    @Column("int", { default: 50 })
+    graphics_quality!: number;
 }
