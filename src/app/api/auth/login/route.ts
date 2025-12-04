@@ -3,18 +3,19 @@ import { withDb } from "@/server/utils/withDb";
 import { UserService } from "@/server/services/userService";
 import { sanitizeText } from "@/utils/sanitize";
 import { ApiError, handleApiError } from "@/server/utils/api";
+import { signJwt } from "@/server/utils/jwt";
 import { z } from "zod";
 
 const loginSchema = z.object({
-    login: z.string().min(4, "Champ invalide"),  // email ou username
-    password: z.string().min(6, "Mot de passe trop court"),
+    login: z.string().min(4),
+    password: z.string().min(6),
 });
 
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-
         const result = loginSchema.safeParse(body);
+
         if (!result.success) {
             throw new ApiError(result.error.issues[0].message, 400);
         }
@@ -27,13 +28,19 @@ export async function POST(req: NextRequest) {
 
             const user = await UserService.validateLogin(db, cleanLogin, cleanPassword);
 
-            if (!user) {
-                throw new ApiError("Identifiants invalides", 401);
-            }
+            const token = signJwt({
+                id: user.id,
+                username: user.username,
+            });
 
             return NextResponse.json({
                 success: true,
-                user,
+                token,
+                user: {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email,
+                },
             });
         });
 

@@ -1,12 +1,30 @@
-import { ApiRequestRepo } from "@/utils/RequestApi";
-
 export class AuthRepository {
-    async login(emailOrUser: string, password: string) {
+
+    async login(login: string, password: string) {
         try {
-            const res = await ApiRequestRepo.AuthUser(emailOrUser, password);
-            return { success: true, data: res.data };
-        } catch (err: any) {
-            return { success: false, message: err?.response?.data?.message || "Erreur réseau" };
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ login, password }),
+            });
+
+            const json = await res.json();
+
+            if (!res.ok) {
+                return { success: false, message: json.error || "Identifiants invalides" };
+            }
+
+            // On REÇOIT:
+            // json.token
+            // json.user = { id, username, email }
+
+            localStorage.setItem("tm_token", json.token);
+            localStorage.setItem("tm_user", JSON.stringify(json.user));
+
+            return { success: true, data: json.user };
+
+        } catch (e: any) {
+            return { success: false, message: e.message || "Erreur réseau" };
         }
     }
 
@@ -14,8 +32,17 @@ export class AuthRepository {
         try {
             const res = await ApiRequestRepo.RegisterUser(email, username, password);
             return { success: true, data: res.data };
+
         } catch (err: any) {
-            return { success: false, message: err?.response?.data?.error || "Erreur réseau" };
+            return {
+                success: false,
+                message: err?.response?.data?.error || "Erreur réseau"
+            };
         }
+    }
+
+    logout() {
+        localStorage.removeItem("tm_token");
+        localStorage.removeItem("tm_user");
     }
 }

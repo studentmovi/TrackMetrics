@@ -1,3 +1,7 @@
+/* ----------------------------------------------------
+   BASE PAGE
+------------------------------------------------------*/
+
 .page {
   min-height: 100vh;
   background: radial-gradient(circle at top, #182636 0%, #050b11 45%, #02040a 100%);
@@ -28,12 +32,6 @@
   backdrop-filter: blur(16px);
 }
 
-.h1 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
 .subtitle {
   font-size: 0.9rem;
   color: #7da3c2;
@@ -61,100 +59,158 @@
   font-size: 0.85rem;
 }
 
-/* USER SECTION */
+/* ----------------------------------------------------
+   DRIVER CARD (F1 STYLE)
+------------------------------------------------------*/
 
-.userRow {
+.driverCard {
   display: flex;
-  gap: 18px;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.avatarWrapper {
-  display: flex;
-  flex-direction: column;
+  gap: 16px;
+  background: #0c1622;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(70,112,170,0.35);
+  margin-bottom: 15px;
   align-items: center;
-  gap: 8px;
 }
 
-.avatar {
+.driverAvatar {
   border-radius: 50%;
-  background: #151f2d;
-  border: 2px solid rgba(70, 122, 210, 0.8);
+  border: 2px solid #4aa8ff;
 }
 
-.userFields {
+.cardRight {
   flex: 1;
-  min-width: 220px;
 }
 
-.label {
-  display: block;
-  font-size: 0.8rem;
-  color: #92b5d4;
-  margin-bottom: 4px;
+.numberRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.input {
-  width: 100%;
-  padding: 9px 10px;
-  background: #111a25;
-  border: 1px solid #27364b;
-  color: #e5f0ff;
+.number {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.username {
+  font-size: 1.2rem;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.flagRow {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.flag {
+  font-size: 1.5rem;
+}
+
+.changeBtn,
+.changeBtnSmall {
+  background: #102030;
+  border: 1px solid #335577;
+  padding: 6px 12px;
   border-radius: 10px;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
+  cursor: pointer;
+  color: #d8e9ff;
+  font-size: 0.8rem;
 
-  &:focus {
-    outline: none;
-    border-color: #0d7ff2;
-    box-shadow: 0 0 0 1px rgba(13, 127, 242, 0.5);
+  &:hover {
+    background: #183147;
   }
 }
 
-/* Avatar uploader */
+/* ----------------------------------------------------
+   MODALS
+------------------------------------------------------*/
 
-.avatarUploader {
-  label {
-    display: inline-block;
-    padding: 6px 10px;
-    background: linear-gradient(135deg, #0d7ff2, #39b9ff);
-    border-radius: 999px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    color: white;
-    white-space: nowrap;
-  }
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
 
-  input {
-    display: none;
+.modal {
+  background: #0f1a28;
+  padding: 24px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  border: 1px solid rgba(70,112,170,0.4);
+  text-align: center;
+}
+
+.closeBtn {
+  margin-top: 18px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: #1b293b;
+  border: 1px solid #35507a;
+  cursor: pointer;
+  color: #d8e9ff;
+
+  &:hover {
+    background: #22344a;
   }
 }
 
-/* Flag / language */
+/* NUMBER GRID */
+.numberGridModal {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 60px);
+  gap: 12px;
+  justify-content: center;
+}
 
-.flagPicker {
-  margin-top: 12px;
+.numberOption {
+  padding: 10px 0;
+  border-radius: 12px;
+  border: 2px solid #4aa8ff;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  background: #111a25;
 
-  h3 {
-    font-size: 0.85rem;
-    margin-bottom: 4px;
-    color: #9abbdd;
-  }
-
-  select {
-    margin-top: 2px;
-    width: 100%;
-    padding: 8px 10px;
-    border-radius: 10px;
-    background: #111a25;
-    border: 1px solid #27364b;
-    color: white;
-    font-size: 0.9rem;
+  &:hover {
+    background: #182334;
   }
 }
 
-/* API & TOKEN */
+/* FLAG GRID */
+.flagGridModal {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 60px);
+  gap: 12px;
+  justify-content: center;
+}
+
+.flagOption {
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 12px;
+  background: #111a25;
+
+  &:hover {
+    background: #182334;
+  }
+}
+
+/* ----------------------------------------------------
+   API TOKEN
+------------------------------------------------------*/
 
 .apiRow {
   margin-top: 8px;
@@ -213,30 +269,20 @@
   }
 }
 
-.help {
-  font-size: 0.8rem;
-  color: #7da3c2;
-}
-
-.helpSmall {
-  margin-top: 4px;
-  font-size: 0.75rem;
-  color: #607a97;
-}
-
-/* TOGGLES */
+/* ----------------------------------------------------
+   TOGGLES, ACTIONS, RANGE ETC
+------------------------------------------------------*/
 
 .toggleRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 0.9rem;
 }
 
 .switch {
   position: relative;
-  display: inline-block;
   width: 42px;
   height: 22px;
 
@@ -250,10 +296,7 @@
   cursor: pointer;
   background: #3c4a61;
   border-radius: 30px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   transition: 0.25s;
 
   &:before {
@@ -271,27 +314,19 @@
 
 input:checked + .slider {
   background: #0d7ff2;
-}
 
-input:checked + .slider:before {
-  transform: translateX(20px);
-}
-
-/* OPTIONS */
-
-.optionGroup {
-  margin-top: 10px;
+  &:before {
+    transform: translateX(20px);
+  }
 }
 
 .optionRow {
   display: flex;
   gap: 8px;
   margin-top: 6px;
-  flex-wrap: wrap;
 
   button {
     flex: 1;
-    min-width: 90px;
     padding: 8px 10px;
     background: #111a25;
     border-radius: 999px;
@@ -311,14 +346,10 @@ input:checked + .slider:before {
   border-color: #3da1ff !important;
 }
 
-/* RANGE */
-
 .range {
   width: 100%;
-  margin-top: 6px;
+  margin-top: 10px;
 }
-
-/* ACTIONS */
 
 .actions {
   margin-top: 22px;
@@ -328,43 +359,33 @@ input:checked + .slider:before {
 }
 
 .saveBtn {
-  width: 100%;
   padding: 12px;
   background: linear-gradient(135deg, #0d7ff2, #4ab4ff);
+  border: none;
   color: white;
   border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
-  border: none;
-  font-size: 0.95rem;
 
   &:disabled {
     opacity: 0.6;
     cursor: default;
   }
 
-  &:not(:disabled):hover {
+  &:hover:not(:disabled) {
     filter: brightness(1.05);
   }
 }
 
 .logoutBtn {
-  width: 100%;
   padding: 10px;
   background: transparent;
   color: #ff5b5b;
   border-radius: 10px;
   cursor: pointer;
   border: 1px solid rgba(255, 91, 91, 0.5);
-  font-size: 0.9rem;
 
   &:hover {
     background: rgba(255, 91, 91, 0.08);
-  }
-}
-
-@media (max-width: 640px) {
-  .card {
-    padding: 18px 14px 24px;
   }
 }

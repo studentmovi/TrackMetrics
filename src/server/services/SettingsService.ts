@@ -12,7 +12,6 @@ export class SettingsService {
         const settings = await UserSettingsRepository.getOrCreateForUser(db, userId);
 
         return {
-            // profil
             username: user.username,
             email: user.email,
             avatarUrl: user.avatar_url,
@@ -20,7 +19,6 @@ export class SettingsService {
             telemetryToken: user.telemetry_token,
             simhubToken: user.simhub_token,
 
-            // settings
             theme: settings.theme,
             showFlagsAlerts: settings.show_flags_alerts === "true",
             showFuelAlerts: settings.show_fuel_alerts === "true",
@@ -30,6 +28,11 @@ export class SettingsService {
             language: settings.language,
             graphicsQuality: settings.graphics_quality,
         };
+    }
+
+    // 👉 MÉTHODE ATTENDUE PAR TA ROUTE PUT
+    static async saveSettings(db: DataSource, userId: number, payload: any) {
+        return this.updateSettings(db, userId, payload);
     }
 
     static async updateSettings(
@@ -54,7 +57,7 @@ export class SettingsService {
             graphicsQuality,
         } = payload;
 
-        // update user
+        // Update user
         await UserRepository.updateProfile(db, userId, {
             username,
             email,
@@ -63,7 +66,7 @@ export class SettingsService {
             simhub_token: simhubToken ?? null,
         });
 
-        // update settings
+        // Update settings
         await UserSettingsRepository.updateForUser(db, userId, {
             theme,
             show_flags_alerts: showFlagsAlerts ? "true" : "false",

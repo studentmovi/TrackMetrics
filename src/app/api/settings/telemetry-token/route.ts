@@ -4,30 +4,12 @@ import { SettingsService } from "@/server/services/SettingsService";
 
 export async function POST(req: Request) {
     return withDb(async (db) => {
-        const body = await req.json();
+        const userId = 1; // TODO: remplacer par auth
+        const token = await SettingsService.regenerateTelemetryToken(db, userId);
 
-        // exemple : userId + settings envoyés depuis la page Settings
-        const { userId, settings } = body;
-
-        if (!userId || !settings) {
-            return NextResponse.json(
-                { error: "Requête invalide" },
-                { status: 400 }
-            );
-        }
-
-        try {
-            const updated = await SettingsService.updateSettings(db, userId, settings);
-
-            return NextResponse.json({
-                success: true,
-                settings: updated,
-            });
-        } catch (err: any) {
-            return NextResponse.json(
-                { error: err.message ?? "Erreur serveur" },
-                { status: 500 }
-            );
-        }
+        return NextResponse.json({
+            success: true,
+            token,
+        });
     });
 }
