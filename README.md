@@ -5,7 +5,6 @@
        alt="TrackMetrics Banner" width="1536" />
 </p>
 
-
 <p align="center">
   <img src="https://raw.githubusercontent.com/studentmovi/TrackMetrics/main/src/assets/logo_banner/logotrack.png"
        alt="TrackMetrics Logo" width="150" />
