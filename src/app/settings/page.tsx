@@ -6,6 +6,10 @@ import Image from "next/image";
 import Footer from "@/components/Layout/Footer/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 
+/* ===========================================================
+    DTO — AJOUT DE driverFlag (sans retirer language)
+===========================================================*/
+
 type SettingsDto = {
     username: string;
     email: string;
@@ -14,13 +18,15 @@ type SettingsDto = {
     telemetryToken: string | null;
     simhubToken: string | null;
 
+    driverFlag: string | null;   // ← NOUVEAU vrai champ pour le drapeau pilote
+    language: string;            // ← reste si un jour tu veux traduire
+
     theme: string;
     showFlagsAlerts: boolean;
     showFuelAlerts: boolean;
     showDamageAlerts: boolean;
     units: string;
     timeFormat: string;
-    language: string;
     graphicsQuality: number;
 };
 
@@ -163,7 +169,7 @@ export default function SettingsPage() {
                     <DriverCard
                         username={settings.username}
                         pilotNumber={settings.pilotNumber}
-                        flag={settings.language}
+                        flag={settings.driverFlag} {/* ← ICI on utilise le vrai champ */}
                         avatarUrl={settings.avatarUrl}
                         onChangeFlag={() => setFlagModal(true)}
                         onChangeNumber={() => setNumberModal(true)}
@@ -181,7 +187,7 @@ export default function SettingsPage() {
                 <FlagModal
                     open={flagModal}
                     onClose={() => setFlagModal(false)}
-                    onSelect={(f) => update("language", f)}
+                    onSelect={(f) => update("driverFlag", f)}   // ← UPDATE du bon champ
                 />
 
                 {/* TELEMETRY SECTION */}
@@ -409,7 +415,7 @@ function FlagModal({ open, onClose, onSelect }) {
                             key={f}
                             className={styles.flagOption}
                             onClick={() => {
-                                onSelect(f);
+                                onSelect(f);   // ← renvoie driverFlag
                                 onClose();
                             }}
                         >
