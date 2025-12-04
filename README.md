@@ -1,8 +1,8 @@
 # TrackMetrics – Plateforme de Télémétrie Racing en Temps Réel
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/studentmovi/TrackMetrics/main/src/assets/logo_banner/bannertrackmetrics.png"
-       alt="TrackMetrics Banner" width="100%" />
+  <img src="https://raw.githubusercontent.com/studentmovi/TrackMetrics/main/src/assets/logo_banner/bannertrackmetrics.png" 
+       alt="TrackMetrics Banner" width="1536" />
 </p>
 
 <p align="center">
