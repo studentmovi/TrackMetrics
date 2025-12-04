@@ -31,4 +31,8 @@ export class User {
 
     @Column("int", { nullable: true })
     pilot_number!: number | null;
+
+    @Column("varchar", { nullable: true })
+    driverFlag!: string | null;
+
 }
