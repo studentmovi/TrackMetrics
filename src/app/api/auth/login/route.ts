@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
             const user = await UserService.validateLogin(db, cleanLogin, cleanPassword);
 
             const token = signJwt({
-                id: user.id,
+                userId: user.id,
                 username: user.username,
             });
 

@@ -6,10 +6,6 @@ import Image from "next/image";
 import Footer from "@/components/Layout/Footer/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 
-/* ===========================================================
-    DTO — AJOUT DE driverFlag (sans retirer language)
-===========================================================*/
-
 type SettingsDto = {
     username: string;
     email: string;
@@ -18,15 +14,13 @@ type SettingsDto = {
     telemetryToken: string | null;
     simhubToken: string | null;
 
-    driverFlag: string | null;   // ← NOUVEAU vrai champ pour le drapeau pilote
-    language: string;            // ← reste si un jour tu veux traduire
-
     theme: string;
     showFlagsAlerts: boolean;
     showFuelAlerts: boolean;
     showDamageAlerts: boolean;
     units: string;
     timeFormat: string;
+    driverFlag: string; // ← CORRECT
     graphicsQuality: number;
 };
 
@@ -43,17 +37,13 @@ export default function SettingsPage() {
 
     const { logout } = useAuth();
 
-    /* ---------------------------------------------
-      LOAD TOKEN
-    ----------------------------------------------*/
+    /* LOAD TOKEN */
     useEffect(() => {
         const t = localStorage.getItem("tm_token");
         setToken(t);
     }, []);
 
-    /* ---------------------------------------------
-      LOAD SETTINGS
-    ----------------------------------------------*/
+    /* LOAD SETTINGS */
     useEffect(() => {
         if (!token) return;
 
@@ -61,9 +51,7 @@ export default function SettingsPage() {
             try {
                 const res = await fetch("/api/settings", {
                     method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    headers: { Authorization: `Bearer ${token}` },
                 });
 
                 const json = await res.json();
@@ -80,21 +68,23 @@ export default function SettingsPage() {
         load();
     }, [token]);
 
-    /* ---------------------------------------------
-      UPDATE FIELD
-    ----------------------------------------------*/
+    /* UPDATE FIELD */
     const update = (field: keyof SettingsDto, value: any) => {
-        setSettings(prev => prev ? { ...prev, [field]: value } : prev);
+        setSettings(prev => (prev ? { ...prev, [field]: value } : prev));
     };
 
-    /* ---------------------------------------------
-      SAVE SETTINGS
-    ----------------------------------------------*/
+    /* SAVE SETTINGS */
     const save = async () => {
         if (!settings) return;
 
         setSaving(true);
         setError(null);
+
+        const safePayload = {
+            ...settings,
+            driverFlag: settings.driverFlag ?? "fr", // FIX IMPORTANT
+            pilotNumber: settings.pilotNumber ?? null,
+        };
 
         try {
             const res = await fetch("/api/settings", {
@@ -103,7 +93,7 @@ export default function SettingsPage() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(settings),
+                body: JSON.stringify(safePayload),
             });
 
             const json = await res.json();
@@ -117,43 +107,35 @@ export default function SettingsPage() {
         }
     };
 
-    /* ---------------------------------------------
-      REGENERATE TOKEN
-    ----------------------------------------------*/
+    /* REGENERATE TELEMETRY TOKEN */
     const regenerateToken = async () => {
         if (!token) return;
 
         try {
             const res = await fetch("/api/settings/telemetry-token", {
                 method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             const json = await res.json();
             if (!res.ok) throw new Error(json.error || "Failed to regenerate token");
 
-            setSettings(prev => prev ? { ...prev, telemetryToken: json.token } : prev);
+            setSettings(prev => (prev ? { ...prev, telemetryToken: json.token } : prev));
         } catch (e: any) {
             setError(e.message);
         }
     };
 
-    /* ---------------------------------------------
-      LOADING STATES
-    ----------------------------------------------*/
+    /* LOADING STATES */
     if (!token) return <div className={styles.loading}>Loading session…</div>;
     if (loading) return <div className={styles.loading}>Loading settings…</div>;
     if (!settings) return <div className={styles.loading}>No settings loaded.</div>;
 
-    const trackingUrl = settings.telemetryToken
-        ? `${typeof window !== "undefined" ? window.location.origin : ""}/telemetry/${settings.telemetryToken}`
-        : null;
+    const trackingUrl =
+        settings.telemetryToken &&
+        `${typeof window !== "undefined" ? window.location.origin : ""}/telemetry/${settings.telemetryToken}`;
 
-    /* ---------------------------------------------
-      PAGE UI
-    ----------------------------------------------*/
+    /* UI */
     return (
         <div className={styles.page}>
             <div className={styles.card}>
@@ -169,28 +151,26 @@ export default function SettingsPage() {
                     <DriverCard
                         username={settings.username}
                         pilotNumber={settings.pilotNumber}
-                        flag={settings.driverFlag} {/* ← ICI on utilise le vrai champ */}
+                        flag={settings.driverFlag}
                         avatarUrl={settings.avatarUrl}
                         onChangeFlag={() => setFlagModal(true)}
                         onChangeNumber={() => setNumberModal(true)}
                     />
                 </section>
 
-                {/* Number Modal */}
                 <NumberModal
                     open={numberModal}
                     onClose={() => setNumberModal(false)}
-                    onSelect={(n) => update("pilotNumber", n)}
+                    onSelect={n => update("pilotNumber", n)}
                 />
 
-                {/* Flag Modal */}
                 <FlagModal
                     open={flagModal}
                     onClose={() => setFlagModal(false)}
-                    onSelect={(f) => update("driverFlag", f)}   // ← UPDATE du bon champ
+                    onSelect={f => update("driverFlag", f)}
                 />
 
-                {/* TELEMETRY SECTION */}
+                {/* TELEMETRY */}
                 <section className={styles.section}>
                     <h2>Telemetry Token</h2>
 
@@ -246,7 +226,7 @@ export default function SettingsPage() {
                             { value: "imperial", label: "MPH" },
                         ]}
                         current={settings.units}
-                        onChange={(v) => update("units", v)}
+                        onChange={v => update("units", v)}
                     />
 
                     <OptionRow
@@ -255,11 +235,11 @@ export default function SettingsPage() {
                             { value: "12h", label: "12H" },
                         ]}
                         current={settings.timeFormat}
-                        onChange={(v) => update("timeFormat", v)}
+                        onChange={v => update("timeFormat", v)}
                     />
                 </section>
 
-                {/* GRAPHICS */}
+                {/* THEME & GRAPHICS */}
                 <section className={styles.section}>
                     <h2>Theme & Graphics</h2>
 
@@ -270,7 +250,7 @@ export default function SettingsPage() {
                             { value: "system", label: "System" },
                         ]}
                         current={settings.theme}
-                        onChange={(v) => update("theme", v)}
+                        onChange={v => update("theme", v)}
                     />
 
                     <input
@@ -278,12 +258,12 @@ export default function SettingsPage() {
                         min={0}
                         max={100}
                         value={settings.graphicsQuality}
-                        onChange={(e) => update("graphicsQuality", Number(e.target.value))}
+                        onChange={e => update("graphicsQuality", Number(e.target.value))}
                         className={styles.range}
                     />
                 </section>
 
-                {/* ACTION BUTTONS */}
+                {/* ACTIONS */}
                 <div className={styles.actions}>
                     <button className={styles.saveBtn} onClick={save} disabled={saving}>
                         {saving ? "Saving..." : "Save Changes"}
@@ -301,24 +281,27 @@ export default function SettingsPage() {
 }
 
 /* ========================================================================
-      SUB COMPONENTS
+   SUB COMPONENTS
 ===========================================================================*/
 
 function DriverCard({ username, pilotNumber, flag, avatarUrl, onChangeNumber, onChangeFlag }) {
-    const flagMap = {
-        fr: "🇫🇷", gb: "🇬🇧", es: "🇪🇸", de: "🇩🇪", it: "🇮🇹",
-        be: "🇧🇪", nl: "🇳🇱", jp: "🇯🇵", us: "🇺🇸", br: "🇧🇷",
-        mx: "🇲🇽", au: "🇦🇺"
+    const flagMap: Record<string, string> = {
+        fr: "🇫🇷",
+        gb: "🇬🇧",
+        es: "🇪🇸",
+        de: "🇩🇪",
+        it: "🇮🇹",
+        be: "🇧🇪",
+        nl: "🇳🇱",
+        jp: "🇯🇵",
+        us: "🇺🇸",
+        br: "🇧🇷",
+        mx: "🇲🇽",
+        au: "🇦🇺",
     };
 
-    const colors = [
-        "#ff2d55", "#ff9500", "#ffd60a", "#0a84ff",
-        "#30d158", "#bf5af2", "#ff375f", "#64d2ff",
-    ];
-
-    const color = pilotNumber
-        ? colors[pilotNumber % colors.length]
-        : "#999";
+    const colors = ["#ff2d55", "#ff9500", "#ffd60a", "#0a84ff", "#30d158", "#bf5af2", "#ff375f", "#64d2ff"];
+    const color = pilotNumber ? colors[pilotNumber % colors.length] : "#999";
 
     return (
         <div className={styles.driverCard}>
@@ -358,10 +341,7 @@ function NumberModal({ open, onClose, onSelect }) {
     if (!open) return null;
 
     const numbers = Array.from({ length: 99 }, (_, i) => i + 1);
-    const colors = [
-        "#ff2d55", "#ff9500", "#ffd60a", "#0a84ff",
-        "#30d158", "#bf5af2", "#ff375f", "#64d2ff",
-    ];
+    const colors = ["#ff2d55", "#ff9500", "#ffd60a", "#0a84ff", "#30d158", "#bf5af2", "#ff375f", "#64d2ff"];
 
     return (
         <div className={styles.modalBackdrop}>
@@ -384,7 +364,9 @@ function NumberModal({ open, onClose, onSelect }) {
                     ))}
                 </div>
 
-                <button className={styles.closeBtn} onClick={onClose}>Close</button>
+                <button className={styles.closeBtn} onClick={onClose}>
+                    Close
+                </button>
             </div>
         </div>
     );
@@ -394,14 +376,20 @@ function NumberModal({ open, onClose, onSelect }) {
 function FlagModal({ open, onClose, onSelect }) {
     if (!open) return null;
 
-    const flags = [
-        "fr","gb","es","de","it","be","nl","jp","us","br","mx","au"
-    ];
-
-    const map = {
-        fr:"🇫🇷", gb:"🇬🇧", es:"🇪🇸", de:"🇩🇪",
-        it:"🇮🇹", be:"🇧🇪", nl:"🇳🇱", jp:"🇯🇵",
-        us:"🇺🇸", br:"🇧🇷", mx:"🇲🇽", au:"🇦🇺",
+    const flags = ["fr", "gb", "es", "de", "it", "be", "nl", "jp", "us", "br", "mx", "au"];
+    const emojiMap: Record<string, string> = {
+        fr: "🇫🇷",
+        gb: "🇬🇧",
+        es: "🇪🇸",
+        de: "🇩🇪",
+        it: "🇮🇹",
+        be: "🇧🇪",
+        nl: "🇳🇱",
+        jp: "🇯🇵",
+        us: "🇺🇸",
+        br: "🇧🇷",
+        mx: "🇲🇽",
+        au: "🇦🇺",
     };
 
     return (
@@ -415,16 +403,18 @@ function FlagModal({ open, onClose, onSelect }) {
                             key={f}
                             className={styles.flagOption}
                             onClick={() => {
-                                onSelect(f);   // ← renvoie driverFlag
+                                onSelect(f);
                                 onClose();
                             }}
                         >
-                            {map[f]}
+                            {emojiMap[f]}
                         </div>
                     ))}
                 </div>
 
-                <button className={styles.closeBtn} onClick={onClose}>Close</button>
+                <button className={styles.closeBtn} onClick={onClose}>
+                    Close
+                </button>
             </div>
         </div>
     );
@@ -436,7 +426,7 @@ function Toggle({ label, value, onChange }) {
         <div className={styles.toggleRow}>
             <span>{label}</span>
             <label className={styles.switch}>
-                <input type="checkbox" checked={value} onChange={onChange}/>
+                <input type="checkbox" checked={value} onChange={onChange} />
                 <span className={styles.slider}></span>
             </label>
         </div>
