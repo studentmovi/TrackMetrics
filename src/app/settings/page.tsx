@@ -4,22 +4,18 @@ import { useState, useEffect } from "react";
 import styles from "./Settings.module.scss";
 import Image from "next/image";
 import Footer from "@/components/Layout/Footer/Footer";
+import Header from "@/components/Layout/Header/Header";
 import { useAuth } from "@/contexts/AuthContext";
 
-/* ===========================================================
-    DTO — AJOUT DE driverFlag (sans retirer language)
-===========================================================*/
-
 type SettingsDto = {
+    id: number;
     username: string;
     email: string;
     avatarUrl: string | null;
     pilotNumber: number | null;
+    driverFlag: string | null;
     telemetryToken: string | null;
     simhubToken: string | null;
-
-    driverFlag: string | null;   // ← NOUVEAU vrai champ pour le drapeau pilote
-    language: string;            // ← reste si un jour tu veux traduire
 
     theme: string;
     showFlagsAlerts: boolean;
@@ -27,6 +23,7 @@ type SettingsDto = {
     showDamageAlerts: boolean;
     units: string;
     timeFormat: string;
+    language: string;
     graphicsQuality: number;
 };
 
@@ -43,17 +40,12 @@ export default function SettingsPage() {
 
     const { logout } = useAuth();
 
-    /* ---------------------------------------------
-      LOAD TOKEN
-    ----------------------------------------------*/
+    /* LOAD TOKEN */
     useEffect(() => {
-        const t = localStorage.getItem("tm_token");
-        setToken(t);
+        setToken(localStorage.getItem("tm_token"));
     }, []);
 
-    /* ---------------------------------------------
-      LOAD SETTINGS
-    ----------------------------------------------*/
+    /* LOAD SETTINGS */
     useEffect(() => {
         if (!token) return;
 
@@ -61,9 +53,7 @@ export default function SettingsPage() {
             try {
                 const res = await fetch("/api/settings", {
                     method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    headers: { Authorization: `Bearer ${token}` },
                 });
 
                 const json = await res.json();
@@ -80,17 +70,13 @@ export default function SettingsPage() {
         load();
     }, [token]);
 
-    /* ---------------------------------------------
-      UPDATE FIELD
-    ----------------------------------------------*/
+    /* UPDATE FIELD */
     const update = (field: keyof SettingsDto, value: any) => {
         setSettings(prev => prev ? { ...prev, [field]: value } : prev);
     };
 
-    /* ---------------------------------------------
-      SAVE SETTINGS
-    ----------------------------------------------*/
-    const save = async () => {
+    /* SAVE NON-PASSWORD SETTINGS */
+    const saveSettings = async () => {
         if (!settings) return;
 
         setSaving(true);
@@ -117,22 +103,18 @@ export default function SettingsPage() {
         }
     };
 
-    /* ---------------------------------------------
-      REGENERATE TOKEN
-    ----------------------------------------------*/
+    /* TELEMETRY TOKEN */
     const regenerateToken = async () => {
         if (!token) return;
 
         try {
             const res = await fetch("/api/settings/telemetry-token", {
                 method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             const json = await res.json();
-            if (!res.ok) throw new Error(json.error || "Failed to regenerate token");
+            if (!res.ok) throw new Error(json.error);
 
             setSettings(prev => prev ? { ...prev, telemetryToken: json.token } : prev);
         } catch (e: any) {
@@ -140,160 +122,175 @@ export default function SettingsPage() {
         }
     };
 
-    /* ---------------------------------------------
-      LOADING STATES
-    ----------------------------------------------*/
     if (!token) return <div className={styles.loading}>Loading session…</div>;
     if (loading) return <div className={styles.loading}>Loading settings…</div>;
     if (!settings) return <div className={styles.loading}>No settings loaded.</div>;
 
-    const trackingUrl = settings.telemetryToken
-        ? `${typeof window !== "undefined" ? window.location.origin : ""}/telemetry/${settings.telemetryToken}`
-        : null;
+    const trackingUrl =
+        settings.telemetryToken &&
+        `${typeof window !== "undefined" ? window.location.origin : ""}/telemetry/${settings.telemetryToken}`;
 
-    /* ---------------------------------------------
-      PAGE UI
-    ----------------------------------------------*/
     return (
         <div className={styles.page}>
-            <div className={styles.card}>
-                <h1>Driver Profile & Settings</h1>
-                <p className={styles.subtitle}>Configure your TrackMetrics profile & telemetry.</p>
+            <Header />
 
-                {error && <div className={styles.error}>{error}</div>}
+            <div className={styles.content}>
+                <div className={styles.card}>
+                    <h1>Driver Profile & Settings</h1>
+                    <p className={styles.subtitle}>Configure your TrackMetrics profile & telemetry.</p>
 
-                {/* DRIVER CARD */}
-                <section className={styles.section}>
-                    <h2>Driver Profile</h2>
+                    {error && <div className={styles.error}>{error}</div>}
 
-                    <DriverCard
-                        username={settings.username}
-                        pilotNumber={settings.pilotNumber}
-                        flag={settings.driverFlag} {/* ← ICI on utilise le vrai champ */}
-                        avatarUrl={settings.avatarUrl}
-                        onChangeFlag={() => setFlagModal(true)}
-                        onChangeNumber={() => setNumberModal(true)}
-                    />
-                </section>
+                    {/* DRIVER CARD */}
+                    <section className={styles.section}>
+                        <h2>Driver Profile</h2>
 
-                {/* Number Modal */}
-                <NumberModal
-                    open={numberModal}
-                    onClose={() => setNumberModal(false)}
-                    onSelect={(n) => update("pilotNumber", n)}
-                />
-
-                {/* Flag Modal */}
-                <FlagModal
-                    open={flagModal}
-                    onClose={() => setFlagModal(false)}
-                    onSelect={(f) => update("driverFlag", f)}   // ← UPDATE du bon champ
-                />
-
-                {/* TELEMETRY SECTION */}
-                <section className={styles.section}>
-                    <h2>Telemetry Token</h2>
-
-                    <div className={styles.apiRow}>
-                        <input
-                            className={styles.apiInput}
-                            readOnly
-                            value={settings.telemetryToken || "No token yet"}
+                        <DriverCard
+                            username={settings.username}
+                            pilotNumber={settings.pilotNumber}
+                            flag={settings.driverFlag || "fr"}
+                            avatarUrl={settings.avatarUrl}
+                            onChangeFlag={() => setFlagModal(true)}
+                            onChangeNumber={() => setNumberModal(true)}
                         />
-                        <button className={styles.regenBtn} onClick={regenerateToken}>
-                            Generate token
+                    </section>
+
+                    {/* ACCOUNT */}
+                    <section className={styles.section}>
+                        <h2>Account</h2>
+
+                        <div className={styles.formGroup}>
+                            <label>Username</label>
+                            <input
+                                type="text"
+                                value={settings.username}
+                                onChange={(e) => update("username", e.target.value)}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>Email</label>
+                            <input
+                                type="email"
+                                value={settings.email}
+                                onChange={(e) => update("email", e.target.value)}
+                            />
+                        </div>
+
+                        <div className={styles.accountActions}>
+                            <button
+                                type="button"
+                                className={styles.secondaryBtn}
+                                onClick={() => alert("TODO: Password modal")}
+                            >
+                                Change password
+                            </button>
+                        </div>
+                    </section>
+
+                    {/* TELEMETRY */}
+                    <section className={styles.section}>
+                        <h2>Telemetry Token</h2>
+
+                        <div className={styles.apiRow}>
+                            <input className={styles.apiInput} readOnly value={settings.telemetryToken || "No token"} />
+                            <button className={styles.regenBtn} onClick={regenerateToken}>Generate</button>
+                        </div>
+
+                        {trackingUrl && (
+                            <div className={styles.trackingUrlBox}>
+                                <span>Tracking URL</span>
+                                <code>{trackingUrl}</code>
+                            </div>
+                        )}
+                    </section>
+
+                    {/* ALERTS */}
+                    <section className={styles.section}>
+                        <h2>Dashboard Alerts</h2>
+
+                        <Toggle label="Flags alerts" value={settings.showFlagsAlerts}
+                                onChange={() => update("showFlagsAlerts", !settings.showFlagsAlerts)} />
+                        <Toggle label="Fuel alerts" value={settings.showFuelAlerts}
+                                onChange={() => update("showFuelAlerts", !settings.showFuelAlerts)} />
+                        <Toggle label="Damage alerts" value={settings.showDamageAlerts}
+                                onChange={() => update("showDamageAlerts", !settings.showDamageAlerts)} />
+                    </section>
+
+                    {/* UNITS */}
+                    <section className={styles.section}>
+                        <h2>Units & Time</h2>
+
+                        <OptionRow
+                            options={[{ value: "metric", label: "KM/H" }, { value: "imperial", label: "MPH" }]}
+                            current={settings.units}
+                            onChange={(v) => update("units", v)}
+                        />
+
+                        <OptionRow
+                            options={[{ value: "24h", label: "24H" }, { value: "12h", label: "12H" }]}
+                            current={settings.timeFormat}
+                            onChange={(v) => update("timeFormat", v)}
+                        />
+                    </section>
+
+                    {/* THEMES */}
+                    <section className={styles.section}>
+                        <h2>Theme & Graphics</h2>
+
+                        <OptionRow
+                            options={[
+                                { value: "light", label: "Light" },
+                                { value: "dark", label: "Dark" },
+                                { value: "system", label: "System" },
+                            ]}
+                            current={settings.theme}
+                            onChange={(v) => update("theme", v)}
+                        />
+
+                        <input
+                            type="range"
+                            min={0}
+                            max={100}
+                            value={settings.graphicsQuality}
+                            onChange={(e) => update("graphicsQuality", Number(e.target.value))}
+                            className={styles.range}
+                        />
+                    </section>
+
+                    {/* ACTIONS */}
+                    <div className={styles.actions}>
+                        <button className={styles.saveBtn} onClick={saveSettings} disabled={saving}>
+                            {saving ? "Saving…" : "Save Changes"}
+                        </button>
+
+                        <button className={styles.logoutBtn} onClick={logout}>
+                            Logout
                         </button>
                     </div>
-
-                    {trackingUrl && (
-                        <div className={styles.trackingUrlBox}>
-                            <span>Tracking URL</span>
-                            <code>{trackingUrl}</code>
-                        </div>
-                    )}
-                </section>
-
-                {/* ALERTS */}
-                <section className={styles.section}>
-                    <h2>Dashboard Alerts</h2>
-
-                    <Toggle
-                        label="Flags alerts"
-                        value={settings.showFlagsAlerts}
-                        onChange={() => update("showFlagsAlerts", !settings.showFlagsAlerts)}
-                    />
-
-                    <Toggle
-                        label="Fuel alerts"
-                        value={settings.showFuelAlerts}
-                        onChange={() => update("showFuelAlerts", !settings.showFuelAlerts)}
-                    />
-
-                    <Toggle
-                        label="Damage alerts"
-                        value={settings.showDamageAlerts}
-                        onChange={() => update("showDamageAlerts", !settings.showDamageAlerts)}
-                    />
-                </section>
-
-                {/* UNITS & TIME */}
-                <section className={styles.section}>
-                    <h2>Units & Time</h2>
-
-                    <OptionRow
-                        options={[
-                            { value: "metric", label: "KM/H" },
-                            { value: "imperial", label: "MPH" },
-                        ]}
-                        current={settings.units}
-                        onChange={(v) => update("units", v)}
-                    />
-
-                    <OptionRow
-                        options={[
-                            { value: "24h", label: "24H" },
-                            { value: "12h", label: "12H" },
-                        ]}
-                        current={settings.timeFormat}
-                        onChange={(v) => update("timeFormat", v)}
-                    />
-                </section>
-
-                {/* GRAPHICS */}
-                <section className={styles.section}>
-                    <h2>Theme & Graphics</h2>
-
-                    <OptionRow
-                        options={[
-                            { value: "light", label: "Light" },
-                            { value: "dark", label: "Dark" },
-                            { value: "system", label: "System" },
-                        ]}
-                        current={settings.theme}
-                        onChange={(v) => update("theme", v)}
-                    />
-
-                    <input
-                        type="range"
-                        min={0}
-                        max={100}
-                        value={settings.graphicsQuality}
-                        onChange={(e) => update("graphicsQuality", Number(e.target.value))}
-                        className={styles.range}
-                    />
-                </section>
-
-                {/* ACTION BUTTONS */}
-                <div className={styles.actions}>
-                    <button className={styles.saveBtn} onClick={save} disabled={saving}>
-                        {saving ? "Saving..." : "Save Changes"}
-                    </button>
-
-                    <button className={styles.logoutBtn} onClick={logout}>
-                        Logout
-                    </button>
                 </div>
             </div>
+
+            {/* ====== MODALS ====== */}
+            {numberModal && (
+                <NumberModal
+                    onClose={() => setNumberModal(false)}
+                    onSelect={(n: number) => {
+                        update("pilotNumber", n);
+                        setNumberModal(false);
+                    }}
+                />
+            )}
+
+            {flagModal && (
+                <FlagModal
+                    onClose={() => setFlagModal(false)}
+                    onSelect={(f: string) => {
+                        update("driverFlag", f);
+                        setFlagModal(false);
+                    }}
+                />
+            )}
 
             <Footer />
         </div>
@@ -301,85 +298,69 @@ export default function SettingsPage() {
 }
 
 /* ========================================================================
-      SUB COMPONENTS
+   DRIVER CARD
 ===========================================================================*/
 
 function DriverCard({ username, pilotNumber, flag, avatarUrl, onChangeNumber, onChangeFlag }) {
     const flagMap = {
-        fr: "🇫🇷", gb: "🇬🇧", es: "🇪🇸", de: "🇩🇪", it: "🇮🇹",
-        be: "🇧🇪", nl: "🇳🇱", jp: "🇯🇵", us: "🇺🇸", br: "🇧🇷",
-        mx: "🇲🇽", au: "🇦🇺"
+        fr: "🇫🇷", gb: "🇬🇧", es: "🇪🇸", de: "🇩🇪", it: "🇮🇹", be: "🇧🇪",
+        nl: "🇳🇱", jp: "🇯🇵", us: "🇺🇸", br: "🇧🇷", mx: "🇲🇽", au: "🇦🇺"
     };
 
-    const colors = [
-        "#ff2d55", "#ff9500", "#ffd60a", "#0a84ff",
-        "#30d158", "#bf5af2", "#ff375f", "#64d2ff",
-    ];
-
-    const color = pilotNumber
-        ? colors[pilotNumber % colors.length]
-        : "#999";
+    const colors = ["#ff2d55", "#ff9500", "#ffd60a", "#0a84ff", "#30d158", "#bf5af2", "#ff375f", "#64d2ff"];
+    const color = pilotNumber ? colors[pilotNumber % colors.length] : "#999";
 
     return (
         <div className={styles.driverCard}>
-            <Image
-                src={avatarUrl || "/default-avatar.png"}
-                width={90}
-                height={90}
-                alt="avatar"
-                className={styles.driverAvatar}
-            />
+            <Image src={avatarUrl || "/default-avatar.png"} width={90} height={90} alt="avatar"
+                   className={styles.driverAvatar} />
 
             <div className={styles.cardRight}>
                 <div className={styles.numberRow}>
                     <span className={styles.number} style={{ color }}>
                         {pilotNumber ?? "--"}
                     </span>
-                    <button className={styles.changeBtn} onClick={onChangeNumber}>
-                        Change
-                    </button>
+                    <button className={styles.changeBtn} onClick={onChangeNumber}>Change</button>
                 </div>
 
                 <div className={styles.username}>{username}</div>
 
                 <div className={styles.flagRow}>
                     <span className={styles.flag}>{flagMap[flag] || "🏳️"}</span>
-                    <button className={styles.changeBtnSmall} onClick={onChangeFlag}>
-                        Change flag
-                    </button>
+                    <button className={styles.changeBtnSmall} onClick={onChangeFlag}>Change flag</button>
                 </div>
             </div>
         </div>
     );
 }
 
-/* NUMBER MODAL */
-function NumberModal({ open, onClose, onSelect }) {
-    if (!open) return null;
+/* ========================================================================
+   NUMBER MODAL
+===========================================================================*/
 
+function NumberModal({ onClose, onSelect }) {
     const numbers = Array.from({ length: 99 }, (_, i) => i + 1);
-    const colors = [
-        "#ff2d55", "#ff9500", "#ffd60a", "#0a84ff",
-        "#30d158", "#bf5af2", "#ff375f", "#64d2ff",
-    ];
 
     return (
-        <div className={styles.modalBackdrop}>
-            <div className={styles.modal}>
-                <h2>Select Number</h2>
+        <div className={styles.modalBackdrop} onClick={onClose}>
+            <div
+                className={styles.modal}
+                onClick={(e) => e.stopPropagation()}
+                style={{ maxHeight: "80vh", overflowY: "auto" }}
+            >
+                <h2>Select your race number</h2>
 
                 <div className={styles.numberGridModal}>
-                    {numbers.map(num => (
+                    {numbers.map(n => (
                         <div
-                            key={num}
+                            key={n}
                             className={styles.numberOption}
-                            style={{ borderColor: colors[num % colors.length] }}
                             onClick={() => {
-                                onSelect(num);
+                                onSelect(n);
                                 onClose();
                             }}
                         >
-                            {num}
+                            {n}
                         </div>
                     ))}
                 </div>
@@ -390,36 +371,37 @@ function NumberModal({ open, onClose, onSelect }) {
     );
 }
 
-/* FLAG MODAL */
-function FlagModal({ open, onClose, onSelect }) {
-    if (!open) return null;
+/* ========================================================================
+   FLAG MODAL
+===========================================================================*/
 
-    const flags = [
-        "fr","gb","es","de","it","be","nl","jp","us","br","mx","au"
-    ];
-
-    const map = {
-        fr:"🇫🇷", gb:"🇬🇧", es:"🇪🇸", de:"🇩🇪",
-        it:"🇮🇹", be:"🇧🇪", nl:"🇳🇱", jp:"🇯🇵",
-        us:"🇺🇸", br:"🇧🇷", mx:"🇲🇽", au:"🇦🇺",
+function FlagModal({ onClose, onSelect }) {
+    const flags: Record<string, string> = {
+        fr: "🇫🇷", gb: "🇬🇧", es: "🇪🇸", de: "🇩🇪", it: "🇮🇹",
+        be: "🇧🇪", nl: "🇳🇱", jp: "🇯🇵", us: "🇺🇸", br: "🇧🇷",
+        mx: "🇲🇽", au: "🇦🇺"
     };
 
     return (
-        <div className={styles.modalBackdrop}>
-            <div className={styles.modal}>
-                <h2>Select Flag</h2>
+        <div className={styles.modalBackdrop} onClick={onClose}>
+            <div
+                className={styles.modal}
+                onClick={(e) => e.stopPropagation()}
+                style={{ maxHeight: "80vh", overflowY: "auto" }}
+            >
+                <h2>Select your flag</h2>
 
                 <div className={styles.flagGridModal}>
-                    {flags.map(f => (
+                    {Object.entries(flags).map(([code, emoji]) => (
                         <div
-                            key={f}
+                            key={code}
                             className={styles.flagOption}
                             onClick={() => {
-                                onSelect(f);   // ← renvoie driverFlag
+                                onSelect(code);
                                 onClose();
                             }}
                         >
-                            {map[f]}
+                            {emoji}
                         </div>
                     ))}
                 </div>
@@ -430,20 +412,26 @@ function FlagModal({ open, onClose, onSelect }) {
     );
 }
 
-/* TOGGLE */
+/* ========================================================================
+   TOGGLE
+===========================================================================*/
+
 function Toggle({ label, value, onChange }) {
     return (
         <div className={styles.toggleRow}>
             <span>{label}</span>
             <label className={styles.switch}>
-                <input type="checkbox" checked={value} onChange={onChange}/>
+                <input type="checkbox" checked={value} onChange={onChange} />
                 <span className={styles.slider}></span>
             </label>
         </div>
     );
 }
 
-/* OPTION ROW */
+/* ========================================================================
+   OPTION ROW
+===========================================================================*/
+
 function OptionRow({ options, current, onChange }) {
     return (
         <div className={styles.optionRow}>
