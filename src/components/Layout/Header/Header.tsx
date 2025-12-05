@@ -45,7 +45,7 @@ export default function Header({ user }) {
             {/* MENU */}
             <nav className={`${styles.menu} ${menuOpen ? styles.open : ""}`}>
                 <a href="/dashboard">Dashboard</a>
-                <a href="/live">Live Telemetry</a>
+                <a href="/live-engineer">Live Telemetry</a>
                 <a href="/historic">Session History</a>
                 <a href="/settings">Settings</a>
                 <a href="/join-code">Join With Code</a>

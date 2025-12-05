@@ -5,11 +5,28 @@
 .page {
   min-height: 100vh;
   background: radial-gradient(circle at top, #182636 0%, #050b11 45%, #02040a 100%);
+
   display: flex;
-  justify-content: center;
-  padding: 40px 16px 80px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  padding: 0 16px;
   color: #d8e9ff;
   font-family: "Space Grotesk", system-ui, sans-serif;
+
+  overflow-x: hidden; // FIX — évite le débordement sur la page
+}
+
+/* WRAPPER AJOUTÉ */
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 40px;
+
+  overflow-x: hidden; // FIX — sécurise l’intérieur
 }
 
 .loading {
@@ -25,6 +42,7 @@
   max-width: 720px;
   background: rgba(10, 20, 35, 0.92);
   border-radius: 24px;
+  margin-top: 40px;
   padding: 24px 22px 28px;
   box-shadow:
           0 0 0 1px rgba(55, 120, 210, 0.4),
@@ -207,6 +225,10 @@
     background: #182334;
   }
 }
+.flagOption,
+.flag {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif !important;
+}
 
 /* ----------------------------------------------------
    API TOKEN
@@ -335,6 +357,8 @@ input:checked + .slider {
     cursor: pointer;
     font-size: 0.85rem;
 
+    min-width: 0; // FIX — empêche le débordement horizontal
+
     &:hover {
       background: #182334;
     }
@@ -388,4 +412,72 @@ input:checked + .slider {
   &:hover {
     background: rgba(255, 91, 91, 0.08);
   }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+
+  label {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    color: #8fafdd;
+  }
+
+  input {
+    padding: 10px;
+    background: #0d141f;
+    border-radius: 10px;
+    border: 1px solid #31405a;
+    color: #e5f0ff;
+
+    &:focus {
+      outline: none;
+      border-color: #4aa8ff;
+    }
+  }
+}
+
+.accountActions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.secondaryBtn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #35507a;
+  background: #101926;
+  color: #d8e9ff;
+  cursor: pointer;
+  font-size: 0.85rem;
+
+  &:hover {
+    background: #182334;
+  }
+}
+
+.passwordHint {
+  font-size: 0.85rem;
+  color: #7da3c2;
+  margin-bottom: 8px;
+}
+
+.passwordActions {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.success {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(38, 190, 120, 0.18);
+  border: 1px solid rgba(72, 230, 160, 0.6);
+  font-size: 0.85rem;
+  color: #c5f7dd;
 }
