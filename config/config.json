@@ -1,0 +1,28 @@
+{
+  "admin": {
+    "email": "admin@tm.io",
+    "username": "admin",
+    "password": "3rW@N!23",
+    "pilotNumber": 44,
+    "driverFlag": "fr",
+    "theme": "dark",
+    "units": "metric",
+    "timeFormat": "24h",
+    "showFlagsAlerts": true,
+    "showFuelAlerts": true,
+    "showDamageAlerts": true,
+    "graphicsQuality": 80
+  },
+
+  "tracks": [
+    { "name": "Monza", "game": "ACC", "length_km": 5.79 },
+    { "name": "Spa-Francorchamps", "game": "ACC", "length_km": 7.00 },
+    { "name": "Silverstone", "game": "ACC", "length_km": 5.89 }
+  ],
+
+  "cars": [
+    { "name": "Ferrari 488 GT3 Evo", "category": "GT3", "game": "ACC" },
+    { "name": "Porsche 911 GT3 R", "category": "GT3", "game": "ACC" },
+    { "name": "Lamborghini Huracán GT3 Evo", "category": "GT3", "game": "ACC" }
+  ]
+}

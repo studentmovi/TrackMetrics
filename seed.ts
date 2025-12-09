@@ -1,75 +1,89 @@
 import "reflect-metadata";
 import "dotenv/config";
-import { initDb } from "./src/server/DataBase/initDb";
-import { User, Track, Car } from "./src/server/DataBase/Entities";
-import { hashPassword } from "./src/server/utils/hash";
+import fs from "fs";
+import path from "path";
+
+import { initDb } from "@/server/DataBase/initDb";
+import { User, Track, Car } from "@/server/DataBase/Entities";
+import { hashPassword } from "@/server/utils/hash";
 
 async function seed() {
     const db = await initDb();
 
-    console.log("🔄 Reset de la base...");
-    await db.synchronize(true); // RESET COMPLET
+    console.log("📄 Lecture du fichier config.json...");
+    const configPath = path.join(process.cwd(), "config.json");
+    const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
 
     const userRepo = db.getRepository(User);
     const trackRepo = db.getRepository(Track);
     const carRepo = db.getRepository(Car);
 
     /* -----------------------------------------------------------------------
-       👤 CRÉATION DE L’ADMIN
+       👤 ADMIN — CREATE OR UPDATE
     ----------------------------------------------------------------------- */
 
-    const hashedPassword = await hashPassword("3rW@N!23");
+    const adminData = config.admin;
 
-    const admin = userRepo.create({
-        email: "admin@tm.io",
-        username: "admin",
-        password_hash: hashedPassword,
+    let admin = await userRepo.findOne({ where: { email: adminData.email } });
 
-        // --- CHAMPS SETTINGS ---
-        avatarUrl: null,
-        pilotNumber: 44,         // Exemple
-        driverFlag: "fr",        // 🇫🇷 FRANCE
+    const hashedPassword = await hashPassword(adminData.password);
 
-        telemetryToken: null,
-        simhubToken: null,
+    if (!admin) {
+        console.log("👤 Admin inexistant → création...");
+        admin = userRepo.create({
+            ...adminData,
+            password_hash: hashedPassword
+        });
+    } else {
+        console.log("👤 Admin trouvé → mise à jour si nécessaire...");
 
-        theme: "dark",
-        units: "metric",
-        timeFormat: "24h",
+        // mot de passe changé → rehash
+        const isPasswordChanged = !(await hashPassword(adminData.password)) === admin.password_hash;
 
-        showFlagsAlerts: true,
-        showFuelAlerts: true,
-        showDamageAlerts: true,
-
-        graphicsQuality: 80,
-    });
+        Object.assign(admin, {
+            ...adminData,
+            ...(isPasswordChanged ? { password_hash: hashedPassword } : {})
+        });
+    }
 
     await userRepo.save(admin);
-    console.log("👤 Admin créé ✔️");
+    console.log("👤 Admin OK ✔️");
 
     /* -----------------------------------------------------------------------
-       🏁 INSERT TRACKS
+       🏁 TRACKS — UPSERT
     ----------------------------------------------------------------------- */
 
-    await trackRepo.insert([
-        { name: "Monza", game: "ACC", length_km: 5.79 },
-        { name: "Spa-Francorchamps", game: "ACC", length_km: 7.00 },
-        { name: "Silverstone", game: "ACC", length_km: 5.89 },
-    ]);
+    console.log("🏁 Synchronisation des tracks...");
 
-    console.log("🏁 Tracks insérés ✔️");
+    for (const t of config.tracks) {
+        const existing = await trackRepo.findOne({ where: { name: t.name } });
+
+        if (!existing) {
+            await trackRepo.save(trackRepo.create(t));
+            console.log(`➕ Track ajouté : ${t.name}`);
+        } else {
+            await trackRepo.save({ ...existing, ...t });
+            console.log(`♻️ Track mis à jour : ${t.name}`);
+        }
+    }
 
     /* -----------------------------------------------------------------------
-       🚗 INSERT CARS
+       🚗 CARS — UPSERT
     ----------------------------------------------------------------------- */
 
-    await carRepo.insert([
-        { name: "Ferrari 488 GT3 Evo", category: "GT3", game: "ACC" },
-        { name: "Porsche 911 GT3 R", category: "GT3", game: "ACC" },
-        { name: "Lamborghini Huracán GT3 Evo", category: "GT3", game: "ACC" },
-    ]);
+    console.log("🚗 Synchronisation des cars...");
 
-    console.log("🚗 Cars insérées ✔️");
+    for (const c of config.cars) {
+        const existing = await carRepo.findOne({ where: { name: c.name } });
+
+        if (!existing) {
+            await carRepo.save(carRepo.create(c));
+            console.log(`➕ Car ajoutée : ${c.name}`);
+        } else {
+            await carRepo.save({ ...existing, ...c });
+            console.log(`♻️ Car mise à jour : ${c.name}`);
+        }
+    }
 
     console.log("\n🌱 Seed terminé avec succès !");
     process.exit(0);

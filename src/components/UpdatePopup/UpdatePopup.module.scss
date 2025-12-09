@@ -1,0 +1,68 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup {
+  background: #111;
+  color: white;
+  padding: 25px;
+  width: 420px;
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  animation: pop 0.25s ease-out;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 22px;
+  text-align: center;
+}
+
+.version {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #00eaff;
+  text-align: center;
+}
+
+.changelog {
+  margin-top: 12px;
+  padding-left: 15px;
+  line-height: 1.5;
+}
+
+.close {
+  margin-top: 20px;
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  background: #00eaff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: black;
+  transition: 0.2s;
+}
+
+.close:hover {
+  background: #00c4d2;
+}
