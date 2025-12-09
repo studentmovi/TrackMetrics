@@ -1,12 +1,12 @@
 .wrapper {
-  position: relative;
-  min-height: 100vh;
+  position: fixed;        // 🧨 solution définitive
+  inset: 0;          // au lieu de min-height
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #101922;
   padding: 20px;
-  overflow: hidden;
 }
 
 

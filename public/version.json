@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "changelog": [
+    "Ajout du système complet de login",
+    "Refonte totale de la page Settings (gestion du numéro de pilote, unités, alertes, préférences…)",
+    "Ajout de la fonctionnalité de modification du mot de passe depuis les paramètres",
+    "Mise à jour complète du Dashboard (layout amélioré, data plus claire, meilleure performance)",
+    "Stabilisation générale et optimisations backend"
+  ]
+}

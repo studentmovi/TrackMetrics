@@ -9,8 +9,6 @@ export default function Page() {
         <div className={styles.wrapper}>
             <div className={styles.animatedBg}></div>
             <div className={styles.glow}></div>
-
-
             <div className={styles.card}>
                 <div className={styles.logo}>
                     <svg width="48" height="48" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -20,14 +18,9 @@ export default function Page() {
                     </svg>
                     <h1>TRACKMETRICS</h1>
                 </div>
-
-
                 <h2>Access Your Dashboard</h2>
-
-
                 <LoginForm />
             </div>
-            <Footer/>
         </div>
 
     );
