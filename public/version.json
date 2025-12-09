@@ -1,10 +1,10 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "changelog": [
-    "Ajout du système complet de login",
-    "Refonte totale de la page Settings (gestion du numéro de pilote, unités, alertes, préférences…)",
-    "Ajout de la fonctionnalité de modification du mot de passe depuis les paramètres",
-    "Mise à jour complète du Dashboard (layout amélioré, data plus claire, meilleure performance)",
-    "Stabilisation générale et optimisations backend"
+    "Added versioning support and UpdateManager to display release notifications inside the app",
+    "Created a dedicated Terms of Use page with a clear, modern layout matching the TrackMetrics design",
+    "Implemented a global Terms of Use acceptance popup (localStorage-based) required before using the platform",
+    "Improved the Terms popup UI (glassmorphism, better hierarchy, key points highlighted)",
+    "Polished several UI details and fixed minor visual issues to improve overall consistency"
   ]
 }

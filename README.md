@@ -26,6 +26,41 @@
 
 </p>
 
+## 📑 Menu
+
+### 🇫🇷 Version Française
+- [Qu'est-ce que TrackMetrics ?](#-quest-ce-que-trackmetrics-)
+- [Fonctionnalités](#️-fonctionnalités)
+  - [Dashboard Pilote](#-dashboard-pilote)
+  - [Live Engineer Dashboard](#-live-engineer-dashboard)
+  - [Profil & Paramètres](#-profil--paramètres)
+  - [Historique des Sessions](#-historique-des-sessions)
+- [Technologies](#️-technologies)
+- [Comment utiliser TrackMetrics ?](#️-comment-utiliser-trackmetrics-)
+- [Roadmap](#️-roadmap)
+- [TrackMetrics Premium](#-trackmetrics-premium)
+  - [Fonctionnalités Premium](#-fonctionnalités-premium-prévues)
+  - [Comparatif Gratuit vs Premium](#-comparatif-gratuit-vs-premium)
+- [Soutenir TrackMetrics](#️-soutenir-trackmetrics)
+
+---
+
+### 🇬🇧 English Version
+- [What is TrackMetrics?](#-what-is-trackmetrics)
+- [Features](#️-features)
+- [User Profile](#-user-profile)
+- [Session History](#-session-history)
+- [Roadmap (EN)](#️-roadmap-en)
+- [TrackMetrics Premium (EN)](#-trackmetrics-premium-1)
+- [Free vs Premium Comparison (EN)](#-free-vs-premium-comparison)
+
+---
+
+### ⚖️ Mentions Légales / Legal Notice
+- [Conditions d’utilisation](#conditions-dutilisation)
+- [Protection des données](#protection-des-données)
+- [Contact / Support](#contact--support)
+
 
 ---
 
@@ -226,6 +261,103 @@ Merci à tous ceux qui utiliseront la version Premium pour soutenir le projet �
 ---
 
 <p align="center"><strong>TrackMetrics – Maîtrise ta performance. Comprends ta télémétrie.</strong></p>
+
+
+# ⚖️ Mentions Légales – TrackMetrics
+
+**TrackMetrics** est un projet développé et édité par :
+
+**Erwan (Développeur indépendant)**  
+Belgique  
+Contact : *à compléter* (email support ou page contact)
+
+L’hébergement du service et du site web est assuré par :  
+**Hostinger International Ltd.**  
+61 Lordou Vironos Street, 6023 Larnaca, Chypre  
+https://www.hostinger.com
+
+---
+
+## 📄 Conditions d’Utilisation
+
+En utilisant TrackMetrics, vous acceptez les conditions suivantes :
+
+- Usage strictement personnel ou professionnel dans le cadre prévu par la plateforme.
+- Aucune revente, redistribution ou modification non autorisée de la plateforme, de son code, de ses interfaces ou de ses ressources graphiques.
+
+Il est **strictement interdit de** :
+
+- contourner les fonctionnalités Premium,
+- décompiler, copier ou réutiliser tout ou partie du code,
+- republier ou redistribuer TrackMetrics sous quelque forme que ce soit,
+- utiliser TrackMetrics pour nuire, attaquer ou collecter des données non autorisées.
+
+Toute violation de ces règles expose l’utilisateur à une **suppression immédiate du compte**, sans remboursement, ainsi qu’à des **poursuites civiles et/ou pénales**.
+
+---
+
+## 🔒 Protection des Données
+
+TrackMetrics collecte uniquement les informations nécessaires au fonctionnement du service :
+
+- Email et identifiants utilisateur
+- Préférences de profil
+- Données techniques de télémétrie (non sensibles)
+
+Aucune donnée ne sera vendue ou partagée à des tiers.  
+Les données sont stockées en Europe via les infrastructures Hostinger.
+
+L’utilisateur peut demander **suppression ou consultation** de ses données en contactant le support.
+
+---
+
+## © Droits d’Auteur & Propriété Intellectuelle
+
+L’ensemble du projet TrackMetrics (code source, design, contenu, branding, logo, texte, interface, système Premium, dashboards, widgets, assets, API, documentation…) est protégé par les législations européennes et internationales concernant :
+
+- le **droit d’auteur**,
+- la **propriété intellectuelle**,
+- la **protection du code informatique**.
+
+### 👉 Toute reproduction, copie, extraction ou réutilisation — totale ou partielle — est strictement interdite.
+
+Cela inclut notamment :
+
+- le code source
+- les interfaces
+- les visuels
+- les bannières / logos
+- les textes du README
+- les fonctionnalités Premium
+- les systèmes et concepts propres à TrackMetrics
+
+### 🚨 Toute copie ou tentative de copie donnera lieu à :
+
+- un **retrait DMCA immédiat**,
+- une **fermeture de compte GitHub / hébergement**,
+- des **poursuites judiciaires**, civiles et pénales.
+
+TrackMetrics est une œuvre propriétaire : **aucune reproduction ou réappropriation n’est tolérée.**
+
+---
+
+## 🛠️ Support & Contact
+
+Pour toute question, demande ou réclamation :  
+➡️ Email / Discord / Page contact *(à compléter)*
+
+Support réservé aux utilisateurs de TrackMetrics et TrackMetrics Premium.
+
+---
+
+## ⚠️ Avertissement
+
+TrackMetrics est fourni **“tel quel”**.  
+Bien que tout soit développé de manière professionnelle, l’éditeur ne peut être tenu responsable :
+
+- des erreurs d’interprétation de télémétrie,
+- d’un usage inadapté,
+- de tout dommage lié à l’utilisation du service.
 
 ---
 
