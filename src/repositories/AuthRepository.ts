@@ -14,14 +14,12 @@ export class AuthRepository {
                 return { success: false, message: json.error || "Identifiants invalides" };
             }
 
-            // On REÇOIT:
-            // json.token
-            // json.user = { id, username, email }
-
-            localStorage.setItem("tm_token", json.token);
-            localStorage.setItem("tm_user", JSON.stringify(json.user));
-
-            return { success: true, data: json.user };
+            // 👉 ON RENVOIE LE TOKEN pour que le AuthProvider l'utilise
+            return {
+                success: true,
+                token: json.token,
+                user: json.user,
+            };
 
         } catch (e: any) {
             return { success: false, message: e.message || "Erreur réseau" };

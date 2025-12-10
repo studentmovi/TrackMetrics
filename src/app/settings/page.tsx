@@ -2,9 +2,14 @@
 
 import { useState, useEffect } from "react";
 import styles from "./Settings.module.scss";
-import Image from "next/image";
-import Footer from "@/components/Layout/Footer/Footer";
+
 import Header from "@/components/Layout/Header/Header";
+import Footer from "@/components/Layout/Footer/Footer";
+
+import DriverCard from "@/components/DriverCard/DriverCard";
+import NumberModal from "@/components/Modals/NumberModal/NumberModal";
+import FlagModal from "@/components/Modals/FlagModal/FlagModal";
+
 import { useAuth } from "@/contexts/AuthContext";
 
 type SettingsDto = {
@@ -75,7 +80,7 @@ export default function SettingsPage() {
         setSettings(prev => prev ? { ...prev, [field]: value } : prev);
     };
 
-    /* SAVE NON-PASSWORD SETTINGS */
+    /* SAVE SETTINGS */
     const saveSettings = async () => {
         if (!settings) return;
 
@@ -103,7 +108,7 @@ export default function SettingsPage() {
         }
     };
 
-    /* TELEMETRY TOKEN */
+    /* REGENERATE TELEMETRY TOKEN */
     const regenerateToken = async () => {
         if (!token) return;
 
@@ -150,8 +155,8 @@ export default function SettingsPage() {
                             pilotNumber={settings.pilotNumber}
                             flag={settings.driverFlag || "fr"}
                             avatarUrl={settings.avatarUrl}
-                            onChangeFlag={() => setFlagModal(true)}
                             onChangeNumber={() => setNumberModal(true)}
+                            onChangeFlag={() => setFlagModal(true)}
                         />
                     </section>
 
@@ -178,13 +183,7 @@ export default function SettingsPage() {
                         </div>
 
                         <div className={styles.accountActions}>
-                            <button
-                                type="button"
-                                className={styles.secondaryBtn}
-                                onClick={() => alert("TODO: Password modal")}
-                            >
-                                Change password
-                            </button>
+                            <button className={styles.secondaryBtn}>Change password</button>
                         </div>
                     </section>
 
@@ -264,31 +263,23 @@ export default function SettingsPage() {
                             {saving ? "Saving…" : "Save Changes"}
                         </button>
 
-                        <button className={styles.logoutBtn} onClick={logout}>
-                            Logout
-                        </button>
+                        <button className={styles.logoutBtn} onClick={logout}>Logout</button>
                     </div>
                 </div>
             </div>
 
-            {/* ====== MODALS ====== */}
+            {/* MODALS */}
             {numberModal && (
                 <NumberModal
                     onClose={() => setNumberModal(false)}
-                    onSelect={(n: number) => {
-                        update("pilotNumber", n);
-                        setNumberModal(false);
-                    }}
+                    onSelect={(n) => update("pilotNumber", n)}
                 />
             )}
 
             {flagModal && (
                 <FlagModal
                     onClose={() => setFlagModal(false)}
-                    onSelect={(f: string) => {
-                        update("driverFlag", f);
-                        setFlagModal(false);
-                    }}
+                    onSelect={(f) => update("driverFlag", f)}
                 />
             )}
 
@@ -297,125 +288,7 @@ export default function SettingsPage() {
     );
 }
 
-/* ========================================================================
-   DRIVER CARD
-===========================================================================*/
-
-function DriverCard({ username, pilotNumber, flag, avatarUrl, onChangeNumber, onChangeFlag }) {
-    const flagMap = {
-        fr: "🇫🇷", gb: "🇬🇧", es: "🇪🇸", de: "🇩🇪", it: "🇮🇹", be: "🇧🇪",
-        nl: "🇳🇱", jp: "🇯🇵", us: "🇺🇸", br: "🇧🇷", mx: "🇲🇽", au: "🇦🇺"
-    };
-
-    const colors = ["#ff2d55", "#ff9500", "#ffd60a", "#0a84ff", "#30d158", "#bf5af2", "#ff375f", "#64d2ff"];
-    const color = pilotNumber ? colors[pilotNumber % colors.length] : "#999";
-
-    return (
-        <div className={styles.driverCard}>
-            <Image src={avatarUrl || "/default-avatar.png"} width={90} height={90} alt="avatar"
-                   className={styles.driverAvatar} />
-
-            <div className={styles.cardRight}>
-                <div className={styles.numberRow}>
-                    <span className={styles.number} style={{ color }}>
-                        {pilotNumber ?? "--"}
-                    </span>
-                    <button className={styles.changeBtn} onClick={onChangeNumber}>Change</button>
-                </div>
-
-                <div className={styles.username}>{username}</div>
-
-                <div className={styles.flagRow}>
-                    <span className={styles.flag}>{flagMap[flag] || "🏳️"}</span>
-                    <button className={styles.changeBtnSmall} onClick={onChangeFlag}>Change flag</button>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-/* ========================================================================
-   NUMBER MODAL
-===========================================================================*/
-
-function NumberModal({ onClose, onSelect }) {
-    const numbers = Array.from({ length: 99 }, (_, i) => i + 1);
-
-    return (
-        <div className={styles.modalBackdrop} onClick={onClose}>
-            <div
-                className={styles.modal}
-                onClick={(e) => e.stopPropagation()}
-                style={{ maxHeight: "80vh", overflowY: "auto" }}
-            >
-                <h2>Select your race number</h2>
-
-                <div className={styles.numberGridModal}>
-                    {numbers.map(n => (
-                        <div
-                            key={n}
-                            className={styles.numberOption}
-                            onClick={() => {
-                                onSelect(n);
-                                onClose();
-                            }}
-                        >
-                            {n}
-                        </div>
-                    ))}
-                </div>
-
-                <button className={styles.closeBtn} onClick={onClose}>Close</button>
-            </div>
-        </div>
-    );
-}
-
-/* ========================================================================
-   FLAG MODAL
-===========================================================================*/
-
-function FlagModal({ onClose, onSelect }) {
-    const flags: Record<string, string> = {
-        fr: "🇫🇷", gb: "🇬🇧", es: "🇪🇸", de: "🇩🇪", it: "🇮🇹",
-        be: "🇧🇪", nl: "🇳🇱", jp: "🇯🇵", us: "🇺🇸", br: "🇧🇷",
-        mx: "🇲🇽", au: "🇦🇺"
-    };
-
-    return (
-        <div className={styles.modalBackdrop} onClick={onClose}>
-            <div
-                className={styles.modal}
-                onClick={(e) => e.stopPropagation()}
-                style={{ maxHeight: "80vh", overflowY: "auto" }}
-            >
-                <h2>Select your flag</h2>
-
-                <div className={styles.flagGridModal}>
-                    {Object.entries(flags).map(([code, emoji]) => (
-                        <div
-                            key={code}
-                            className={styles.flagOption}
-                            onClick={() => {
-                                onSelect(code);
-                                onClose();
-                            }}
-                        >
-                            {emoji}
-                        </div>
-                    ))}
-                </div>
-
-                <button className={styles.closeBtn} onClick={onClose}>Close</button>
-            </div>
-        </div>
-    );
-}
-
-/* ========================================================================
-   TOGGLE
-===========================================================================*/
-
+/* TOGGLE */
 function Toggle({ label, value, onChange }) {
     return (
         <div className={styles.toggleRow}>
@@ -428,10 +301,7 @@ function Toggle({ label, value, onChange }) {
     );
 }
 
-/* ========================================================================
-   OPTION ROW
-===========================================================================*/
-
+/* OPTION ROW */
 function OptionRow({ options, current, onChange }) {
     return (
         <div className={styles.optionRow}>

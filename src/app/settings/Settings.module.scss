@@ -5,7 +5,6 @@
 .page {
   min-height: 100vh;
   background: radial-gradient(circle at top, #182636 0%, #050b11 45%, #02040a 100%);
-
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -15,10 +14,10 @@
   color: #d8e9ff;
   font-family: "Space Grotesk", system-ui, sans-serif;
 
-  overflow-x: hidden; // FIX — évite le débordement sur la page
+  overflow-x: hidden;
 }
 
-/* WRAPPER AJOUTÉ */
+/* CONTENT WRAPPER */
 .content {
   flex: 1;
   display: flex;
@@ -26,7 +25,7 @@
   width: 100%;
   padding-bottom: 40px;
 
-  overflow-x: hidden; // FIX — sécurise l’intérieur
+  overflow-x: hidden;
 }
 
 .loading {
@@ -37,6 +36,10 @@
   color: #7da3c2;
 }
 
+/* ----------------------------------------------------
+   CARD WRAPPER
+------------------------------------------------------*/
+
 .card {
   width: 100%;
   max-width: 720px;
@@ -44,6 +47,7 @@
   border-radius: 24px;
   margin-top: 40px;
   padding: 24px 22px 28px;
+
   box-shadow:
           0 0 0 1px rgba(55, 120, 210, 0.4),
           0 18px 45px rgba(0, 0, 0, 0.7);
@@ -78,160 +82,7 @@
 }
 
 /* ----------------------------------------------------
-   DRIVER CARD (F1 STYLE)
-------------------------------------------------------*/
-
-.driverCard {
-  display: flex;
-  gap: 16px;
-  background: #0c1622;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(70,112,170,0.35);
-  margin-bottom: 15px;
-  align-items: center;
-}
-
-.driverAvatar {
-  border-radius: 50%;
-  border: 2px solid #4aa8ff;
-}
-
-.cardRight {
-  flex: 1;
-}
-
-.numberRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.number {
-  font-size: 2.4rem;
-  font-weight: 700;
-}
-
-.username {
-  font-size: 1.2rem;
-  margin-top: 4px;
-  font-weight: 600;
-}
-
-.flagRow {
-  margin-top: 6px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.flag {
-  font-size: 1.5rem;
-}
-
-.changeBtn,
-.changeBtnSmall {
-  background: #102030;
-  border: 1px solid #335577;
-  padding: 6px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  color: #d8e9ff;
-  font-size: 0.8rem;
-
-  &:hover {
-    background: #183147;
-  }
-}
-
-/* ----------------------------------------------------
-   MODALS
-------------------------------------------------------*/
-
-.modalBackdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.modal {
-  background: #0f1a28;
-  padding: 24px;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 500px;
-  border: 1px solid rgba(70,112,170,0.4);
-  text-align: center;
-}
-
-.closeBtn {
-  margin-top: 18px;
-  padding: 10px 20px;
-  border-radius: 12px;
-  background: #1b293b;
-  border: 1px solid #35507a;
-  cursor: pointer;
-  color: #d8e9ff;
-
-  &:hover {
-    background: #22344a;
-  }
-}
-
-/* NUMBER GRID */
-.numberGridModal {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 60px);
-  gap: 12px;
-  justify-content: center;
-}
-
-.numberOption {
-  padding: 10px 0;
-  border-radius: 12px;
-  border: 2px solid #4aa8ff;
-  cursor: pointer;
-  color: white;
-  font-weight: 600;
-  background: #111a25;
-
-  &:hover {
-    background: #182334;
-  }
-}
-
-/* FLAG GRID */
-.flagGridModal {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 60px);
-  gap: 12px;
-  justify-content: center;
-}
-
-.flagOption {
-  font-size: 2rem;
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 12px;
-  background: #111a25;
-
-  &:hover {
-    background: #182334;
-  }
-}
-.flagOption,
-.flag {
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif !important;
-}
-
-/* ----------------------------------------------------
-   API TOKEN
+   API TOKEN BLOCK
 ------------------------------------------------------*/
 
 .apiRow {
@@ -251,6 +102,11 @@
   color: #e5f0ff;
   font-family: "Space Grotesk", monospace;
   font-size: 0.85rem;
+
+  &:focus {
+    outline: none;
+    border-color: #4aa8ff;
+  }
 }
 
 .regenBtn {
@@ -292,7 +148,56 @@
 }
 
 /* ----------------------------------------------------
-   TOGGLES, ACTIONS, RANGE ETC
+   FORM FIELDS
+------------------------------------------------------*/
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+
+  label {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    color: #8fafdd;
+  }
+
+  input {
+    padding: 10px;
+    background: #0d141f;
+    border-radius: 10px;
+    border: 1px solid #31405a;
+    color: #e5f0ff;
+
+    &:focus {
+      outline: none;
+      border-color: #4aa8ff;
+    }
+  }
+}
+
+.accountActions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.secondaryBtn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #35507a;
+  background: #101926;
+  color: #d8e9ff;
+  cursor: pointer;
+  font-size: 0.85rem;
+
+  &:hover {
+    background: #182334;
+  }
+}
+
+/* ----------------------------------------------------
+   TOGGLES
 ------------------------------------------------------*/
 
 .toggleRow {
@@ -342,6 +247,10 @@ input:checked + .slider {
   }
 }
 
+/* ----------------------------------------------------
+   OPTION ROWS
+------------------------------------------------------*/
+
 .optionRow {
   display: flex;
   gap: 8px;
@@ -357,7 +266,7 @@ input:checked + .slider {
     cursor: pointer;
     font-size: 0.85rem;
 
-    min-width: 0; // FIX — empêche le débordement horizontal
+    min-width: 0;
 
     &:hover {
       background: #182334;
@@ -370,10 +279,18 @@ input:checked + .slider {
   border-color: #3da1ff !important;
 }
 
+/* ----------------------------------------------------
+   RANGE
+------------------------------------------------------*/
+
 .range {
   width: 100%;
   margin-top: 10px;
 }
+
+/* ----------------------------------------------------
+   ACTION BUTTONS
+------------------------------------------------------*/
 
 .actions {
   margin-top: 22px;
@@ -414,50 +331,9 @@ input:checked + .slider {
   }
 }
 
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  margin-top: 12px;
-
-  label {
-    font-size: 0.85rem;
-    margin-bottom: 4px;
-    color: #8fafdd;
-  }
-
-  input {
-    padding: 10px;
-    background: #0d141f;
-    border-radius: 10px;
-    border: 1px solid #31405a;
-    color: #e5f0ff;
-
-    &:focus {
-      outline: none;
-      border-color: #4aa8ff;
-    }
-  }
-}
-
-.accountActions {
-  margin-top: 14px;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.secondaryBtn {
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid #35507a;
-  background: #101926;
-  color: #d8e9ff;
-  cursor: pointer;
-  font-size: 0.85rem;
-
-  &:hover {
-    background: #182334;
-  }
-}
+/* ----------------------------------------------------
+   PASSWORD FEEDBACK
+------------------------------------------------------*/
 
 .passwordHint {
   font-size: 0.85rem;

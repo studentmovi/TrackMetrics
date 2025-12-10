@@ -1,0 +1,57 @@
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal {
+  background: #0f1a28;
+  padding: 24px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 450px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid rgba(70,112,170,0.4);
+  text-align: center;
+}
+
+.grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 60px);
+  gap: 12px;
+  justify-content: center;
+}
+
+.numberItem {
+  padding: 10px 0;
+  border-radius: 12px;
+  border: 2px solid #4aa8ff;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  background: #111a25;
+
+  &:hover {
+    background: #182334;
+  }
+}
+
+.closeBtn {
+  margin-top: 18px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: #1b293b;
+  border: 1px solid #35507a;
+  cursor: pointer;
+  color: #d8e9ff;
+
+  &:hover {
+    background: #22344a;
+  }
+}
