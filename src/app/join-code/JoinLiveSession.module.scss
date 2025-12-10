@@ -1,0 +1,96 @@
+.wrapper {
+  position: fixed;      /* FULLSCREEN par-dessus tout */
+  inset: 0;             /* top:0; right:0; bottom:0; left:0 */
+  width: 100%;
+  height: 100vh;
+
+  background: #0b1118;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+  /* On tue TOUT scroll ici */
+  overflow: hidden;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: #0d141c;
+  border-radius: 20px;
+  padding: 50px 35px;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(0, 140, 255, 0.15);
+
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 12px;
+  }
+
+  p {
+    color: #9ca7b8;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+
+  label {
+    display: block;
+    text-align: left;
+    color: #bcc7d6;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px 16px;
+
+    /* Empêche tout dépassement chelou */
+    box-sizing: border-box;
+    max-width: 100%;
+
+    background: #0a0f14;
+    border: 1px solid rgba(0, 120, 255, 0.25);
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 15px;
+    margin-bottom: 25px;
+    transition: 0.2s;
+
+    &::placeholder {
+      color: #556070;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 10px rgba(0, 120, 255, 0.25);
+    }
+  }
+
+  button {
+    width: 100%;
+    padding: 14px 0;
+    background: #007bff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: 0.25s ease;
+
+    &:hover {
+      background: #0a84ff;
+      box-shadow: 0 0 15px rgba(0, 120, 255, 0.4);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+}

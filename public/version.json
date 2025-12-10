@@ -1,10 +1,10 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "changelog": [
-    "Added versioning support and UpdateManager to display release notifications inside the app",
-    "Created a dedicated Terms of Use page with a clear, modern layout matching the TrackMetrics design",
-    "Implemented a global Terms of Use acceptance popup (localStorage-based) required before using the platform",
-    "Improved the Terms popup UI (glassmorphism, better hierarchy, key points highlighted)",
-    "Polished several UI details and fixed minor visual issues to improve overall consistency"
+    "Fixed layout overflow issues causing unwanted scrollbars across multiple pages",
+    "Refined the Join Live Session screen layout (proper centering, fixed-height wrapper, no overflow)",
+    "Improved input sizing and responsiveness to prevent UI stretching on large screens",
+    "Enhanced styling consistency across the authentication/connection screens",
+    "Minor visual polish and cleanup of SCSS structure for more stable rendering"
   ]
 }
