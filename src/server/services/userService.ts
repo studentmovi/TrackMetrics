@@ -31,4 +31,39 @@ export class UserService {
 
         return user;
     }
+    static async getById(db: DataSource, id: number) {
+        const repo = this.repo(db);
+        const user = await repo.findOne({ where: { id } });
+
+        if (!user) {
+            throw new ApiError("User not found", 404);
+        }
+
+        return user;
+    }
+    static async createUser(db: DataSource, email: string, username: string, password: string) {
+        const repo = this.repo(db);
+
+        const existingUser = await repo.findOne({
+            where: [
+                { email },
+                { username }
+            ]
+        });
+
+        if (existingUser) {
+            throw new ApiError("Email ou nom d'utilisateur déjà utilisé", 400);
+        }
+
+        const password_hash = await hashPassword(password);
+
+        const newUser = repo.create({
+            email,
+            username,
+            password_hash,
+        });
+
+        await repo.save(newUser);
+        return newUser;
+    }
 }

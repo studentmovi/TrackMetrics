@@ -2,7 +2,6 @@
 import React from "react";
 import styles from "./liveEngineer.module.scss";
 
-// Components déjà existants
 import Header from "@/components/Layout/Header/Header";
 import { Footer } from "@/components/Layout/Footer/Footer";
 import CarStatus from "@/components/CarStatus/CarStatus";
@@ -10,13 +9,29 @@ import Tyres from "@/components/Tyres/Tyres";
 import FuelERS from "@/components/FuelERS/FuelERS";
 import SessionInfo from "@/components/SessionInfo/SessionInfo";
 
-// Nouveaux composants
 import SectorTimes from "@/components/SectorTimes/SectorTimes";
 import RaceFlags from "@/components/RaceFlags/RaceFlags";
 import CompetitorMap from "@/components/CompetitorMap/CompetitorMap";
 import PositionTable from "@/components/PositionTable/PositionTable";
 
+import { useFakeTelemetry } from "@/hooks/useFakeTelemetry";
+
 export default function LiveEngineerDashboard() {
+    const telemetry = useFakeTelemetry("GT");
+
+    // Sécurité : si le hook renvoie rien (rare mais possible)
+    if (!telemetry) {
+        return (
+            <div className={styles.container}>
+                <Header />
+                <main className={styles.main}>
+                    <p style={{ color: "#fff" }}>Waiting for telemetry data...</p>
+                </main>
+                <Footer />
+            </div>
+        );
+    }
+
     return (
         <div className={styles.container}>
             <Header />
@@ -25,12 +40,18 @@ export default function LiveEngineerDashboard() {
 
                 {/* Bloc CarStatus */}
                 <section className={styles.block}>
-                    <CarStatus />
+                    <CarStatus
+                        speed={telemetry.speed}
+                        rpm={telemetry.rpm}
+                        gear={telemetry.gear}
+                        throttle={telemetry.throttle}
+                        brake={telemetry.brake}
+                    />
                 </section>
 
                 {/* Bloc Secteurs */}
                 <section className={styles.block}>
-                    <SectorTimes />
+                    <SectorTimes session={telemetry.session} />
                 </section>
 
                 {/* Bloc Drapeaux */}
@@ -43,24 +64,24 @@ export default function LiveEngineerDashboard() {
                     <CompetitorMap />
                 </section>
 
-                {/* Bloc Positions & Gaps */}
+                {/* Bloc Positions */}
                 <section className={styles.block}>
                     <PositionTable />
                 </section>
 
                 {/* Tyres */}
                 <section className={styles.block}>
-                    <Tyres />
+                    <Tyres tyres={telemetry.tyres} brakes={telemetry.brakes} />
                 </section>
 
                 {/* Fuel & ERS */}
                 <section className={styles.block}>
-                    <FuelERS />
+                    <FuelERS fuel={telemetry.fuel} ers={telemetry.ers} />
                 </section>
 
                 {/* Info Session */}
                 <section className={styles.block}>
-                    <SessionInfo />
+                    <SessionInfo session={telemetry.session} />
                 </section>
 
             </main>

@@ -1,0 +1,98 @@
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal {
+  background: #0f1a28;
+  padding: 24px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 520px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid rgba(70,112,170,0.4);
+  text-align: center;
+}
+
+/* Search bar */
+.flagSearch {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  background: #0d141f;
+  border-radius: 10px;
+  border: 1px solid #31405a;
+  color: #e5f0ff;
+
+  &:focus {
+    outline: none;
+    border-color: #4aa8ff;
+  }
+}
+
+/* Loader */
+.loader {
+  padding: 20px;
+  color: #7da3c2;
+  font-size: 0.9rem;
+}
+
+/* GRID */
+.flagGrid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 70px);
+  gap: 12px;
+  justify-content: center;
+}
+
+/* FLAG ITEM */
+.flagItem {
+  background: #111a25;
+  border-radius: 12px;
+  padding: 6px 4px;
+  cursor: pointer;
+  border: 1px solid #253446;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: 0.15s;
+
+  span {
+    font-size: 0.7rem;
+    color: #90a5b8;
+  }
+
+  &:hover {
+    background: #182334;
+    transform: translateY(-2px);
+  }
+}
+
+.flagIcon {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* Close button */
+.closeBtn {
+  margin-top: 18px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: #1b293b;
+  border: 1px solid #35507a;
+  cursor: pointer;
+  color: #d8e9ff;
+
+  &:hover {
+    background: #22344a;
+  }
+}

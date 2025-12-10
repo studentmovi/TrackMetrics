@@ -1,0 +1,62 @@
+.driverCard {
+  display: flex;
+  gap: 16px;
+  background: #0c1622;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(70,112,170,0.35);
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.driverAvatar {
+  border-radius: 50%;
+  border: 2px solid #4aa8ff;
+}
+
+.cardRight {
+  flex: 1;
+}
+
+.numberRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.number {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.username {
+  font-size: 1.2rem;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.flagRow {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.flagIcon {
+  border-radius: 4px;
+}
+
+.changeBtn,
+.changeBtnSmall {
+  background: #102030;
+  border: 1px solid #335577;
+  padding: 6px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #d8e9ff;
+  font-size: 0.8rem;
+
+  &:hover {
+    background: #183147;
+  }
+}
