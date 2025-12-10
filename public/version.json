@@ -1,10 +1,8 @@
 {
-  "version": "1.1.1",
+  "version": "1.1.2",
   "changelog": [
-    "Fixed layout overflow issues causing unwanted scrollbars across multiple pages",
-    "Refined the Join Live Session screen layout (proper centering, fixed-height wrapper, no overflow)",
-    "Improved input sizing and responsiveness to prevent UI stretching on large screens",
-    "Enhanced styling consistency across the authentication/connection screens",
-    "Minor visual polish and cleanup of SCSS structure for more stable rendering"
+    "Added TrackMetrics icon and metadata to update browser tab title and favicon",
+    "Improved brand visibility by integrating the official app logo into the UI",
+    "Cleaned up metadata configuration and ensured compatibility across browsers and devices"
   ]
 }
