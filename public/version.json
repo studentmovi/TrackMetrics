@@ -1,12 +1,8 @@
 {
-  "version": "1.1.3",
+  "version": "1.1.4",
   "changelog": [
-    "Updated Settings page to support the full SVG flag system (200+ flags) with optimized loading and search",
-    "Reworked driver flag management to use SVG assets instead of emoji for consistent cross-platform rendering",
-    "Improved Header logic to correctly display the user's driver flag with automatic fallback and Linux-safe lowercase handling",
-    "Refactored settings retrieval and token-related logic for better stability and cleaner state management",
-    "Extracted flag modal, number modal, and driver card into standalone reusable components",
-    "Fixed multiple 404 issues related to asset paths by standardizing the flags folder under /public/flags",
-    "General UI polishing and small accessibility improvements across Settings & Header"
+    "Enhanced vertical scrollbar styling for FlagModal and NumberModal for better UX and consistent dark-theme integration",
+    "Fixed overflow and scroll snapping issues inside both modals",
+    "Improved modal container spacing and scrollbar hitbox to ensure smooth navigation even with long lists"
   ]
 }

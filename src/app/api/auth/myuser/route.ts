@@ -39,6 +39,11 @@ export async function GET(req: Request) {
                 id: user.id,
                 username: user.username,
                 email: user.email,
+                avatar: user.avatarUrl,
+                driverNumber: user.pilotNumber,
+                driverFlag: user.driverFlag,
+                telemetryToken: user.telemetryToken,
+                simhubToken: user.simhubToken,
             });
         });
 

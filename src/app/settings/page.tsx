@@ -45,6 +45,8 @@ export default function SettingsPage() {
 
     const { logout } = useAuth();
 
+    const [success, setSuccess] = useState<string | null>(null);
+
     /* LOAD TOKEN */
     useEffect(() => {
         setToken(localStorage.getItem("tm_token"));
@@ -86,6 +88,7 @@ export default function SettingsPage() {
 
         setSaving(true);
         setError(null);
+        setSuccess(null);
 
         try {
             const res = await fetch("/api/settings", {
@@ -101,6 +104,11 @@ export default function SettingsPage() {
             if (!res.ok) throw new Error(json.error || "Failed to save settings");
 
             setSettings(json);
+            setSuccess("Settings successfully saved ✔");
+
+            // auto-hide après 3 sec
+            setTimeout(() => setSuccess(null), 3000);
+
         } catch (e: any) {
             setError(e.message);
         } finally {
@@ -145,6 +153,7 @@ export default function SettingsPage() {
                     <p className={styles.subtitle}>Configure your TrackMetrics profile & telemetry.</p>
 
                     {error && <div className={styles.error}>{error}</div>}
+                    {success && <div className={styles.success}>{success}</div>}
 
                     {/* DRIVER CARD */}
                     <section className={styles.section}>
