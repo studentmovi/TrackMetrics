@@ -18,6 +18,29 @@
   overflow-y: auto;
   border: 1px solid rgba(70,112,170,0.4);
   text-align: center;
+
+  /* === TRACKMETRICS SCROLLBAR === */
+  /* Chrome / Edge / Safari */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #0b1220; /* bleu nuit */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #1e2d41; /* bleu/gris foncé */
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #3c7dd9; /* bleu accent / hover */
+  }
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #1e2d41 #0b1220;
 }
 
 .grid {
