@@ -1,9 +1,33 @@
 // app/terms/page.tsx
 "use client";
 
+import { useState } from "react";
 import styles from "./terms.module.scss";
 
 export default function TermsPage() {
+    const [showConfirm, setShowConfirm] = useState(false);
+
+    const redirectAfterChoice = () => {
+        const isAuthenticated =
+            localStorage.getItem("isAuthenticated") === "true";
+
+        window.location.href = isAuthenticated ? "/dashboard" : "/login";
+    };
+
+    const acceptTerms = () => {
+        localStorage.setItem("acceptedTerms", "true");
+        redirectAfterChoice();
+    };
+
+    const refuseTerms = () => {
+        setShowConfirm(true);
+    };
+
+    const confirmRefuse = () => {
+        localStorage.setItem("acceptedTerms", "false");
+        redirectAfterChoice();
+    };
+
     return (
         <div className={styles.container}>
             <h1>Terms of Use — TrackMetrics</h1>
@@ -29,7 +53,6 @@ export default function TermsPage() {
 
             <section>
                 <h2>2. Eligibility</h2>
-                <p>To use TrackMetrics, you must:</p>
                 <ul>
                     <li>Be at least 16 years old</li>
                     <li>Agree to these Terms of Use</li>
@@ -39,128 +62,128 @@ export default function TermsPage() {
 
             <section>
                 <h2>3. Acceptable Use</h2>
-                <p>You agree NOT to:</p>
                 <ul>
-                    <li>Copy, reproduce, or redistribute TrackMetrics in any form</li>
+                    <li>Copy, reproduce, or redistribute TrackMetrics</li>
                     <li>Reverse engineer or extract any part of the platform</li>
-                    <li>Bypass or attempt to bypass Premium features</li>
-                    <li>Use the service for malicious or unauthorized purposes</li>
+                    <li>Bypass Premium features</li>
+                    <li>Use the service for malicious purposes</li>
                     <li>Collect data without permission</li>
-                    <li>Resell or share your account access</li>
+                    <li>Resell or share account access</li>
                 </ul>
                 <p>
-                    Violations may result in account termination, data removal, legal prosecution,
-                    and DMCA takedown requests.
+                    Violations may result in account termination and legal action.
                 </p>
             </section>
 
             <section>
                 <h2>4. Premium Features</h2>
                 <p>
-                    TrackMetrics offers optional Premium features. Premium access is personal,
-                    non-transferable, and may not be resold. Refunds are not guaranteed unless
-                    required by applicable law.
+                    Premium access is personal, non-transferable, and non-refundable unless
+                    required by law.
                 </p>
             </section>
 
             <section>
                 <h2>5. Intellectual Property</h2>
                 <p>
-                    TrackMetrics, including but not limited to source code, UI/UX design,
-                    dashboards, widgets, assets, branding, systems, and documentation, is fully
-                    protected by international copyright and intellectual property law.
+                    All TrackMetrics content is protected by intellectual property laws.
                 </p>
                 <p><strong>
-                    Any reproduction, extraction, redistribution, or reuse — in whole or in part —
-                    is strictly prohibited.
+                    Any unauthorized reuse is strictly prohibited.
                 </strong></p>
-                <p>
-                    Violations may lead to civil and criminal liability, including DMCA takedowns
-                    and legal action.
-                </p>
             </section>
 
             <section>
                 <h2>6. User Data & Privacy</h2>
-                <p>
-                    TrackMetrics collects only the minimal data required for the service to operate.
-                    This includes:
-                </p>
-
                 <ul>
                     <li>Email and basic user identifiers</li>
-                    <li>Profile preferences (units, language, avatar, pilot number, etc.)</li>
+                    <li>Profile preferences</li>
                     <li>
-                        <strong>Non-sensitive telemetry data coming directly from the game</strong>,
-                        including but not limited to:
+                        <strong>Non-sensitive telemetry data</strong>
                         <ul style={{ marginTop: "10px" }}>
-                            <li>Lap times and sector times</li>
-                            <li>Speed, throttle and brake inputs</li>
-                            <li>ERS usage and fuel levels</li>
-                            <li>Tyre temperatures and pressures</li>
-                            <li>Car damage and mechanical status</li>
-                            <li>Car position, delta and timing data</li>
-                            <li>Track, session type and game metadata</li>
+                            <li>Lap times</li>
+                            <li>Inputs</li>
+                            <li>ERS & fuel</li>
+                            <li>Tyres & damage</li>
+                            <li>Timing & session data</li>
                         </ul>
                     </li>
                 </ul>
-
                 <p>
-                    TrackMetrics does <strong>not</strong> collect personal files, chat logs, microphone
-                    input, system data, GPS information, or anything outside the telemetry stream that
-                    the user intentionally sends.
-                </p>
-
-                <p>
-                    Data is stored in Europe through Hostinger’s infrastructure.
-                    No data is sold or shared with third parties.
-                    Users may request deletion of their account and data at any time.
+                    No personal files, chats, microphone or system data are collected.
                 </p>
             </section>
 
             <section>
-                <h2>7. Disclaimer of Warranty</h2>
-                <p>
-                    TrackMetrics is provided “as is” without any warranty. The developer is not
-                    responsible for telemetry misinterpretation, gameplay issues, data inaccuracies,
-                    or any damage resulting from service usage.
-                </p>
+                <h2>7. Disclaimer</h2>
+                <p>TrackMetrics is provided “as is”.</p>
             </section>
 
             <section>
-                <h2>8. Limitation of Liability</h2>
-                <p>
-                    TrackMetrics and its developer are not liable for indirect damages, data loss,
-                    downtime, or issues caused by external telemetry tools or third-party software.
-                </p>
+                <h2>8. Liability</h2>
+                <p>The developer is not liable for indirect damages.</p>
             </section>
 
             <section>
-                <h2>9. Account Termination</h2>
-                <p>
-                    Accounts may be suspended or terminated if Terms are violated, illegal activity
-                    is detected, or Premium access is abused. Users may request account deletion at any time.
-                </p>
+                <h2>9. Termination</h2>
+                <p>Accounts may be terminated if Terms are violated.</p>
             </section>
 
             <section>
-                <h2>10. Changes to These Terms</h2>
-                <p>
-                    Terms may be updated at any time. Continued use of the platform implies acceptance
-                    of the latest version.
-                </p>
+                <h2>10. Changes</h2>
+                <p>Terms may be updated at any time.</p>
             </section>
 
             <section>
                 <h2>11. Contact</h2>
                 <p>
-                    For legal inquiries or support, please contact:
-                    <br /> <strong>[Add your email / Discord link here]</strong>
+                    Legal & support:
+                    <br /><strong>[Add your email / Discord]</strong>
                 </p>
             </section>
 
+            {/* ACTIONS */}
+            <div className={styles.actions}>
+                <button onClick={refuseTerms} className={styles.refuseBtn}>
+                    Refuse Terms
+                </button>
+
+                <button onClick={acceptTerms} className={styles.acceptBtn}>
+                    Accept Terms
+                </button>
+            </div>
+
+            {/* CONFIRM MODAL */}
+            {showConfirm && (
+                <div className={styles.confirmOverlay}>
+                    <div className={styles.confirmModal}>
+                        <h3>Are you sure?</h3>
+                        <p>
+                            If you refuse the Terms of Use, this page will still appear
+                            in the future.
+                        </p>
+
+                        <div className={styles.confirmActions}>
+                            <button
+                                onClick={() => setShowConfirm(false)}
+                                className={styles.cancelBtn}
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                onClick={confirmRefuse}
+                                className={styles.confirmRefuseBtn}
+                            >
+                                Yes, refuse
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <footer className={styles.footer}>
-                TrackMetrics © All Rights Reserved — Unauthorized copying or reuse is prohibited.
+                TrackMetrics © All Rights Reserved
             </footer>
         </div>
     );

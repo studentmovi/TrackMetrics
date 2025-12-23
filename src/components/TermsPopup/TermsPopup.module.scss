@@ -103,3 +103,16 @@
     background: #1e4fd6;
   }
 }
+.refuseBtn {
+  background: transparent;
+  border: 1px solid #64748b;
+  padding: 10px 16px;
+  color: #cbd5e1;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background: rgba(100, 116, 139, 0.15);
+  }
+}

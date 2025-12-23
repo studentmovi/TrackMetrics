@@ -8,12 +8,19 @@ export default function TermsPopup() {
 
     useEffect(() => {
         const accepted = localStorage.getItem("acceptedTerms");
-        if (accepted !== "true") setVisible(true);
+        if (accepted !== "true") {
+            setVisible(true);
+        }
     }, []);
 
     const acceptTerms = () => {
         localStorage.setItem("acceptedTerms", "true");
         setVisible(false);
+    };
+
+    const refuseTerms = () => {
+        localStorage.setItem("acceptedTerms", "false");
+        setVisible(false); // il ferme… mais il reviendra 😈
     };
 
     if (!visible) return null;
@@ -30,13 +37,22 @@ export default function TermsPopup() {
                 <ul className={styles.points}>
                     <li>We only process non-sensitive telemetry from your game.</li>
                     <li>No personal files, chat logs, or system data are collected.</li>
-                    <li>Accepting the Terms is required to use TrackMetrics.</li>
+                    <li>Accepting the Terms is required to remove this popup.</li>
                 </ul>
 
                 <div className={styles.actions}>
-                    <a href="/terms" target="_blank" rel="noopener noreferrer" className={styles.readBtn}>
+                    <a
+                        href="/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.readBtn}
+                    >
                         Read Terms
                     </a>
+
+                    <button onClick={refuseTerms} className={styles.refuseBtn}>
+                        Refuse
+                    </button>
 
                     <button onClick={acceptTerms} className={styles.acceptBtn}>
                         Accept
